@@ -12,14 +12,35 @@ spec:
       labels:
         app: foundry
     spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile:
+          type: RuntimeDefault
       containers:
         - name: foundry
           image: felddy/foundryvtt:v12.328.0 # renovate
           resources:
             requests:
               cpu: 1000m
-              memory: 2000Gi
+              memory: 2Gi
             limits:
-              memory: 4000Gi
+              memory: 4Gi
           ports:
             - containerPort: 30000
+              name: web
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            privileged: false
+            readOnlyRootFilesystem: true
+            seccompProfile:
+              type: RuntimeDefault
+            runAsUser: 1000
+            runAsGroup: 1000
+            runAsNonRoot: true
