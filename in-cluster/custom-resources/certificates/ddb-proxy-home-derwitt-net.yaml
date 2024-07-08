@@ -1,0 +1,12 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: ddb-proxy-home-derwitt-net-ingress-cert
+spec:
+  secretName: ddb-proxy-home-derwitt-net-ingress-cert
+  issuerRef:
+    name: cloudflare-cluster-issuer
+    kind: ClusterIssuer
+  dnsNames:
+    - ddb-proxy.home.derwitt.net

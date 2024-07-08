@@ -1,0 +1,126 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: foundry
+  labels:
+    app.kubernetes.io/name: foundry
+    app.kubernetes.io/component: foundry
+    app.kubernetes.io/part-of: foundry
+    app.kubernetes.io/managed-by: argocd
+spec:
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: foundry
+      app.kubernetes.io/component: foundry
+      app.kubernetes.io/part-of: foundry
+      app.kubernetes.io/managed-by: argocd
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: foundry
+        app.kubernetes.io/component: foundry
+        app.kubernetes.io/part-of: foundry
+        app.kubernetes.io/managed-by: argocd
+    spec:
+      hostname: foundry
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 421
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile:
+          type: RuntimeDefault
+      volumes:
+        - name: tmp
+          emptyDir: {}
+        - name: aws-config
+          secret:
+            secretName: foundry-settings
+            items:
+              - key: awsConfig.json
+                path: awsConfig.json
+        - name: data
+          persistentVolumeClaim:
+            claimName: foundry-data-pvc
+      containers:
+        - name: foundry
+          image: felddy/foundryvtt:12.328.0 # renovate
+          resources:
+            requests:
+              cpu: 1000m
+              memory: 2Gi
+            limits:
+              memory: 4Gi
+          env:
+            - name: FOUNDRY_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  key: foundry-username
+                  name: foundry-credentials
+            - name: FOUNDRY_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: foundry-password
+                  name: foundry-credentials
+            - name: FOUNDRY_LICENSE_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: foundry-license-key
+                  name: foundry-licenses
+            - name: FOUNDRY_ADMIN_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: admin-key
+                  name: foundry-settings
+            - name: CONTAINER_URL_FETCH_RETRY
+              value: "3"
+            - name: FOUNDRY_AWS_CONFIG
+              value: "/home/foundry/aws/awsConfig.json"
+            - name: FOUNDRY_HOSTNAME
+              value: vtt.home.derwitt.net
+            - name: FOUNDRY_LOCAL_HOSTNAME
+              value: vtt.home.derwitt.net
+            - name: FOUNDRY_MINIFY_STATIC_FILES
+              value: "true"
+            - name: FOUNDRY_PROXY_PORT
+              value: "443"
+            - name: FOUNDRY_PROXY_SSL
+              value: "true"
+            - name: FOUNDRY_TELEMETRY
+              value: "true"
+          livenessProbe:
+            initialDelaySeconds: 600
+            failureThreshold: 10
+            periodSeconds: 300
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            initialDelaySeconds: 30
+            httpGet:
+              path: /
+              port: http
+          volumeMounts:
+            - mountPath: /data
+              name: data
+            - mountPath: /tmp
+              name: tmp
+            - mountPath: /home/foundry/aws
+              name: aws-config
+          ports:
+            - containerPort: 30000
+              name: http
+              protocol: TCP
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: false
+            seccompProfile:
+              type: RuntimeDefault
+            runAsUser: 0
+            runAsGroup: 0
+            runAsNonRoot: false

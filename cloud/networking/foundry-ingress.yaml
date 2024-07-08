@@ -1,0 +1,29 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: foundry
+  labels:
+    app.kubernetes.io/name: foundry
+    app.kubernetes.io/component: foundry
+    app.kubernetes.io/part-of: foundry
+    app.kubernetes.io/managed-by: argocd
+  annotations:
+    cert-manager.io/cluster-issuer: code-and-quest-de-letsencrypt
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - vtt.code-and-quest.de
+      secretName: foundry-ingress-tls
+  rules:
+    - host: vtt.code-and-quest.de
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:
+                name: foundry
+                port:
+                  name: http

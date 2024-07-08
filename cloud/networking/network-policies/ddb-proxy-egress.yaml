@@ -1,0 +1,34 @@
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: ddb-proxy-egress-policy
+  labels:
+    app.kubernetes.io/name: ddb-proxy-egress-policy
+    app.kubernetes.io/component: ddb-proxy
+    app.kubernetes.io/part-of: foundry
+    app.kubernetes.io/managed-by: argocd
+spec:
+  endpointSelector:
+    matchLabels:
+      app.kubernetes.io/name: ddb-proxy
+      app.kubernetes.io/component: ddb-proxy
+      app.kubernetes.io/part-of: foundry
+  egress:
+    - toEndpoints:
+        - matchLabels:
+            io.kubernetes.pod.namespace: kube-system
+            k8s-app: kube-dns
+      toPorts:
+        - ports:
+            - port: "53"
+              protocol: UDP
+          rules:
+            dns:
+              - matchPattern: "*"
+    - toFQDNs:
+        - matchPattern: "*.dndbeyond.com"
+        - matchName: "dndbeyond.com"
+      toPorts:
+        - ports:
+            - port: "443"

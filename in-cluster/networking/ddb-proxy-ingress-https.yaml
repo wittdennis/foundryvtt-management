@@ -1,0 +1,24 @@
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: ddb-proxy-ingress-https
+  labels:
+    app.kubernetes.io/name: ddb-proxy-ingress-https
+    app.kubernetes.io/component: ddb-proxy
+    app.kubernetes.io/part-of: foundry
+    app.kubernetes.io/managed-by: argocd
+  annotations:
+    traefik.ingress.kubernetes.io/service.serversscheme: https
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - kind: Rule
+      match: Host(`ddb-proxy.home.derwitt.net`)
+      priority: 10
+      services:
+        - name: ddb-proxy
+          port: http
+  tls:
+    secretName: ddb-proxy-home-derwitt-net-ingress-cert

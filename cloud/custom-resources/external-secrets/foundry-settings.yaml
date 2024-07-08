@@ -1,0 +1,30 @@
+---
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: foundry-settings
+  labels:
+    app.kubernetes.io/name: foundry-settings
+    app.kubernetes.io/component: foundry
+    app.kubernetes.io/part-of: foundry
+    app.kubernetes.io/managed-by: argocd
+spec:
+  refreshInterval: 1h
+  secretStoreRef:
+    name: vault-backend-foundry
+    kind: ClusterSecretStore
+  target:
+    name: foundry-settings
+    creationPolicy: Owner
+    deletionPolicy: Delete
+  data:
+    - remoteRef:
+        conversionStrategy: Default
+        key: /settings
+        property: admin-key
+      secretKey: admin-key
+    - remoteRef:
+        conversionStrategy: Default
+        key: /settings
+        property: aws-config
+      secretKey: awsConfig.json
