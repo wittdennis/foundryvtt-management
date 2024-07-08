@@ -10,6 +10,7 @@ spec:
   template:
     metadata:
       name: "{{ nameNormalized }}-foundry-bootstrapper"
+      namespace: foundry
     spec:
       project: foundry
       syncPolicy:
