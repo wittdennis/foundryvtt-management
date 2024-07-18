@@ -1,0 +1,20 @@
+# Module and Game System version tracking
+
+This file simply leverages [Renovate](https://docs.renovatebot.com/) in order to track version updates to my installed modules and game systems.
+
+## Game systems
+
+D&D 5e: 3.2.1 # renovate: datasource=github-releases depName=foundryvtt/dnd5e extractVersion=^release-(?<version>.*)$ versioning=semver
+
+## Modules
+
+DDB-Importer: 5.2.25 # renovate: datasource=github-tags depName=MrPrimate/ddb-importer versioning=semver
+Dice So Nice!: 4.6.10 # renovate: datasource=gitlab-tags depName=riccisi/foundryvtt-dice-so-nice versioning=semver
+Dice Tray: 2.1.11 # renovate: datasource=github-releases depName=mclemente/fvtt-dice-tray versioning=semver
+Magic Items: 4.1.7 # renovate: datasource=github-releases depName=PwQt/magic-items-2 versioning=semver
+Polyglot: 2.4.15 # renovate: datasource=github-releases depName=mclemente/fvtt-module-polyglot
+Ready Set Roll D&D5e: 3.1.0 # renovate: datasource=github-releases depName=MangoFVTT/fvtt-ready-set-roll-5e extractVersion=^release-(?<version>.*)$ versioning=semver
+Simple Calender: v2.4.18 # renovate: datasource=github-tags depName=vigoren/foundryvtt-simple-calendar versioning=semver-coerced
+Tokenizer: 4.3.10 # renovate: datasource=github-tags depName=MrPrimate/tokenizer versioning=semver
+Universal Battlemap Importer: 4.0.0 # renovate: datasource=github-releases depName=moo-man/FVTT-DD-Import versioning=semver
+Vision 5e: v2.3.1 # renovate: datasource=github-tags depName=dev7355608/vision-5e versioning=semver
