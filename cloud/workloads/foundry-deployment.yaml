@@ -95,6 +95,8 @@ spec:
               value: "true"
             - name: FOUNDRY_WORLD
               value: "danddhard"
+            - name: FOUNDRY_VERSION
+              value: "12.329"
           livenessProbe:
             initialDelaySeconds: 600
             failureThreshold: 10
