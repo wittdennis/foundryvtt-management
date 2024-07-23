@@ -93,8 +93,6 @@ spec:
               value: "true"
             - name: FOUNDRY_TELEMETRY
               value: "true"
-            - name: FOUNDRY_VERSION
-              value: "12.329"
           livenessProbe:
             initialDelaySeconds: 600
             failureThreshold: 10
