@@ -49,7 +49,7 @@ spec:
             claimName: foundry-data-pvc
       containers:
         - name: foundry
-          image: felddy/foundryvtt:12.328.0 # renovate
+          image: felddy/foundryvtt:12.329.0 # renovate
           resources:
             requests:
               cpu: 1000m
