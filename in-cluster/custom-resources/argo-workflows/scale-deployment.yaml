@@ -1,0 +1,50 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/argoproj/argo-workflows/main/api/jsonschema/schema.json
+---
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: scale-deployment
+spec:
+  entrypoint: scale-deployment
+  artifactGC:
+    strategy: OnWorkflowDeletion
+    serviceAccountName: foundry-workflows
+  podGC:
+    strategy: OnWorkflowSuccess
+  securityContext:
+    allowPrivilegeEscalation: false
+    readOnlyRootFilesystem: true
+    runAsNonRoot: true
+    seccompProfile:
+      type: RuntimeDefault
+  arguments:
+    parameters:
+      - name: replicaCount
+      - name: deployment
+        default: foundry
+  templates:
+    - name: scale-deployment
+      serviceAccountName: foundry-workflows
+      automountServiceAccountToken: true
+      inputs:
+        parameters:
+          - name: replicaCount
+          - name: deployment
+      container:
+        image: bitnami/kubectl:1.30.3 # renovate
+        command:
+          - sh
+          - -c
+        args:
+          - |
+            set -eu
+
+            kubectl scale --replicas={{inputs.parameters.replicaCount}} -n foundry deployment/{{inputs.parameters.deployment}}
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        allowPrivilegeEscalation: false
+        readOnlyRootFilesystem: true
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
