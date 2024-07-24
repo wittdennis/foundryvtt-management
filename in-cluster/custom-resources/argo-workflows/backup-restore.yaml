@@ -55,7 +55,7 @@ spec:
 
     - name: list-snapshots
       container:
-        image: restic/restic:0.16.5 # renovate
+        image: restic/restic:0.17.0 # renovate
         command: [sh, -c]
         args:
           - |
@@ -119,7 +119,7 @@ spec:
             s3:
               key: "{{workflow.name}}/foundry-data.tar.xz"
       container:
-        image: restic/restic:0.16.5 # renovate
+        image: restic/restic:0.17.0 # renovate
         command: [sh, -c]
         args:
           - |
