@@ -1,0 +1,204 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/argoproj/argo-workflows/main/api/jsonschema/schema.json
+---
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: foundry-backup-restore
+spec:
+  entrypoint: restore
+  onExit: exit-handler
+  serviceAccountName: foundry-workflows
+  artifactGC:
+    strategy: OnWorkflowDeletion
+    serviceAccountName: foundry-workflows
+  securityContext:
+    allowPrivilegeEscalation: false
+    readOnlyRootFilesystem: true
+    runAsNonRoot: true
+    seccompProfile:
+      type: RuntimeDefault
+  volumes:
+    - name: foundry-data
+      persistentVolumeClaim:
+        claimName: foundry-data-pvc
+    - name: tmp
+      emptyDir: {}
+  templates:
+    - name: restore
+      steps:
+        - - name: list-snapshots
+            template: list-snapshots
+        - - name: choose-snapshot
+            template: choose-snapshot
+        - - name: download-snapshot
+            template: download-snapshot
+            arguments:
+              parameters:
+                - name: snapshotId
+                  value: "{{steps.choose-snapshot.outputs.parameters.snapshotId}}"
+        - - name: scale-down
+            arguments:
+              parameters:
+                - name: deployment
+                  value: foundry
+                - name: replicaCount
+                  value: "0"
+            templateRef:
+              template: scale-deployment
+              name: scale-deployment
+        - - name: restore-data
+            template: restore-data
+            arguments:
+              artifacts:
+                - name: backup-archive
+                  from: "{{steps.download-snapshot.outputs.artifacts.backup-archive}}"
+
+    - name: list-snapshots
+      container:
+        image: restic/restic:0.17.0 # renovate
+        command: [sh, -c]
+        args:
+          - |
+            set -eu
+
+            restic init || true
+            restic snapshots
+        volumeMounts:
+          - name: tmp
+            mountPath: /tmp
+        env:
+          - name: AZURE_ACCOUNT_NAME
+            valueFrom:
+              secretKeyRef:
+                name: backup-settings
+                key: azure-account-name
+          - name: AZURE_ACCOUNT_KEY
+            valueFrom:
+              secretKeyRef:
+                name: backup-settings
+                key: azure-account-key
+          - name: RESTIC_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: backup-settings
+                key: restic-password
+          - name: RESTIC_REPOSITORY
+            value: azure:foundry:/
+        securityContext:
+          runAsUser: 100
+          runAsGroup: 1000
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          capabilities:
+            drop:
+              - ALL
+
+    - name: choose-snapshot
+      suspend: {}
+      inputs:
+        parameters:
+          - name: snapshotId
+            default: "CHANGE ME!"
+            description: >-
+              Snapshot ID to be restored. Can be retrieved from previous step
+      outputs:
+        parameters:
+          - name: snapshotId
+            valueFrom:
+              supplied: {}
+
+    - name: download-snapshot
+      inputs:
+        parameters:
+          - name: snapshotId
+      outputs:
+        artifacts:
+          - name: backup-archive
+            path: /tmp/foundry-data.tar.xz
+            s3:
+              key: "{{workflow.name}}/foundry-data.tar.xz"
+      container:
+        image: restic/restic:0.17.0 # renovate
+        command: [sh, -c]
+        args:
+          - |
+            set -eu
+
+            echo "Getting snapshot form restic repository"
+            restic init || true
+            restic restore {{inputs.parameters.snapshotId}} --target / --path /tmp/foundry-data.tar.xz
+        volumeMounts:
+          - name: tmp
+            mountPath: /tmp
+        env:
+          - name: AZURE_ACCOUNT_NAME
+            valueFrom:
+              secretKeyRef:
+                name: backup-settings
+                key: azure-account-name
+          - name: AZURE_ACCOUNT_KEY
+            valueFrom:
+              secretKeyRef:
+                name: backup-settings
+                key: azure-account-key
+          - name: RESTIC_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: backup-settings
+                key: restic-password
+          - name: RESTIC_REPOSITORY
+            value: azure:foundry:/
+        securityContext:
+          runAsUser: 100
+          runAsGroup: 1000
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          capabilities:
+            drop:
+              - ALL
+
+    - name: restore-data
+      serviceAccountName: foundry-workflows
+      inputs:
+        artifacts:
+          - name: backup-archive
+            path: /tmp/foundry-data.tar.xz
+      container:
+        image: denniswitt/tar:0.1.0 # renovate
+        workingDir: /tmp
+        command:
+          - sh
+          - -c
+        args:
+          - |
+            set -eux
+
+            tar -C /foundry-data -Jxvf foundry-data.tar.xz --overwrite --strip-components=1
+        volumeMounts:
+          - mountPath: /tmp
+            name: tmp
+          - mountPath: /foundry-data
+            name: foundry-data
+        securityContext:
+          runAsUser: 0
+          runAsGroup: 0
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          runAsNonRoot: false
+          seccompProfile:
+            type: RuntimeDefault
+
+    - name: exit-handler
+      steps:
+        - - name: scale-up
+            arguments:
+              parameters:
+                - name: deployment
+                  value: foundry
+                - name: replicaCount
+                  value: "1"
+            templateRef:
+              template: scale-deployment
+              name: scale-deployment

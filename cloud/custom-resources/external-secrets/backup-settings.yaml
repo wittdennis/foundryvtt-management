@@ -1,0 +1,35 @@
+---
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: backup-settings
+  labels:
+    app.kubernetes.io/name: backup-settings
+    app.kubernetes.io/component: foundry
+    app.kubernetes.io/part-of: foundry
+    app.kubernetes.io/managed-by: argocd
+spec:
+  refreshInterval: 1h
+  secretStoreRef:
+    name: vault-backend-foundry
+    kind: ClusterSecretStore
+  target:
+    name: backup-settings
+    creationPolicy: Owner
+    deletionPolicy: Delete
+  data:
+    - remoteRef:
+        conversionStrategy: Default
+        key: /backups/azure-blob-settings
+        property: azure-account-key
+      secretKey: azure-account-key
+    - remoteRef:
+        conversionStrategy: Default
+        key: /backups/azure-blob-settings
+        property: azure-account-name
+      secretKey: azure-account-name
+    - remoteRef:
+        conversionStrategy: Default
+        key: /backups/restic-settings
+        property: password
+      secretKey: restic-password
