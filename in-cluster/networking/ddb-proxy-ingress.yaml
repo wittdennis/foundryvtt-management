@@ -1,0 +1,29 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ddb-proxy-ingress
+  labels:
+    app.kubernetes.io/name: ddb-proxy-ingress
+    app.kubernetes.io/component: ddb-proxy
+    app.kubernetes.io/part-of: foundry
+    app.kubernetes.io/managed-by: argocd
+  annotations:
+    cert-manager.io/cluster-issuer: cloudflare-cluster-issuer
+    traefik.ingress.kubernetes.io/router.middlewares: traefik-redirect-to-https@kubernetescrd
+spec:
+  ingressClassName: traefik
+  tls:
+    - hosts:
+        - ddb-proxy.home.derwitt.net
+      secretName: ddb-proxy-ingress-tls
+  rules:
+    - host: ddb-proxy.home.derwitt.net
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:
+                name: ddb-proxy
+                port:
+                  name: http

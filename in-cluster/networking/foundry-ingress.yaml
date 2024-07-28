@@ -1,0 +1,29 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: foundry-ingress
+  labels:
+    app.kubernetes.io/name: foundry-ingress
+    app.kubernetes.io/component: foundry
+    app.kubernetes.io/part-of: foundry
+    app.kubernetes.io/managed-by: argocd
+  annotations:
+    cert-manager.io/cluster-issuer: cloudflare-cluster-issuer
+    traefik.ingress.kubernetes.io/router.middlewares: traefik-redirect-to-https@kubernetescrd
+spec:
+  ingressClassName: traefik
+  tls:
+    - hosts:
+        - vtt.home.derwitt.net
+      secretName: foundry-ingress-tls
+  rules:
+    - host: vtt.home.derwitt.net
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:
+                name: foundry
+                port:
+                  name: http
