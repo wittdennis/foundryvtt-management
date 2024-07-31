@@ -10,6 +10,7 @@ metadata:
     app.kubernetes.io/managed-by: argocd
   annotations:
     cert-manager.io/cluster-issuer: code-and-quest-de-letsencrypt
+    nginx.ingress.kubernetes.io/proxy-body-size: 64m
 spec:
   ingressClassName: nginx
   tls:
