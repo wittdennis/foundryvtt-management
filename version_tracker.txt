@@ -19,4 +19,3 @@ Tokenizer: 4.3.10 # renovate: datasource=github-tags depName=MrPrimate/tokenizer
 Universal Battlemap Importer: 4.0.0 # renovate: datasource=github-releases depName=moo-man/FVTT-DD-Import versioning=semver
 Vision 5e: v2.3.2 # renovate: datasource=github-tags depName=dev7355608/vision-5e versioning=semver
 FxMaster: v4.0.2 # renovate: datasource=github-releases depName=ghost-fvtt/fxmaster versioning=semver-coerced
-Hero Creation Tool: 1.9.2 # renovate: datasource=github-releases depName=HeroCreationLab/hero-creation-tool extractVersion=^release-(?<version>.*)$ versioning=semver
