@@ -52,10 +52,10 @@ spec:
           image: felddy/foundryvtt:12.330.0 # renovate
           resources:
             requests:
-              cpu: 1000m
-              memory: 2Gi
+              cpu: 300m
+              memory: 350Mi
             limits:
-              memory: 4Gi
+              memory: 1Gi
           env:
             - name: FOUNDRY_USERNAME
               valueFrom:
