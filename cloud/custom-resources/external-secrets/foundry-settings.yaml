@@ -26,5 +26,10 @@ spec:
     - remoteRef:
         conversionStrategy: Default
         key: /settings
+        property: saltysausge-admin-key
+      secretKey: saltysausage-admin-key
+    - remoteRef:
+        conversionStrategy: Default
+        key: /settings
         property: aws-config
       secretKey: awsConfig.json

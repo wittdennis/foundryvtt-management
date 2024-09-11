@@ -1,0 +1,19 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: foundry-saltysausage
+  labels:
+    app.kubernetes.io/name: foundry-saltysausage
+    app.kubernetes.io/component: foundry
+    app.kubernetes.io/part-of: foundry-saltysausage
+    app.kubernetes.io/managed-by: argocd
+spec:
+  selector:
+    app.kubernetes.io/name: foundry-saltysausage
+    app.kubernetes.io/component: foundry
+    app.kubernetes.io/instance: foundry-saltysausage
+  ports:
+    - port: 80
+      targetPort: http
+      name: http
