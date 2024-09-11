@@ -1,0 +1,22 @@
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: foundry-saltysausage-ingress-policy
+  labels:
+    app.kubernetes.io/name: foundry-saltysausage-ingress-policy
+    app.kubernetes.io/component: foundry
+    app.kubernetes.io/part-of: foundry-saltysausage
+    app.kubernetes.io/managed-by: argocd
+spec:
+  endpointSelector:
+    matchLabels:
+      app.kubernetes.io/name: foundry-saltysausage
+      app.kubernetes.io/part-of: foundry-saltysausage
+  ingress:
+    - fromEndpoints:
+        - matchLabels:
+            app.kubernetes.io/name: ingress-nginx
+            app.kubernetes.io/instance: ingress-nginx
+            app.kubernetes.io/component: controller
+            io.kubernetes.pod.namespace: ingress-nginx
