@@ -38,12 +38,12 @@ spec:
       volumes:
         - name: tmp
           emptyDir: {}
-        # - name: aws-config
-        #   secret:
-        #     secretName: foundry-settings
-        #     items:
-        #       - key: awsConfig.json
-        #         path: awsConfig.json
+        - name: aws-config
+          secret:
+            secretName: foundry-settings
+            items:
+              - key: saltysausage-awsConfig.json
+                path: awsConfig.json
         - name: data
           persistentVolumeClaim:
             claimName: foundry-saltysausage-data-pvc
@@ -79,8 +79,8 @@ spec:
                   name: foundry-settings
             - name: CONTAINER_URL_FETCH_RETRY
               value: "3"
-            # - name: FOUNDRY_AWS_CONFIG
-            #   value: "/home/foundry/aws/awsConfig.json"
+            - name: FOUNDRY_AWS_CONFIG
+              value: "/home/foundry/aws/awsConfig.json"
             - name: FOUNDRY_HOSTNAME
               value: vtt.saltysausage.com
             - name: FOUNDRY_LOCAL_HOSTNAME
@@ -110,8 +110,8 @@ spec:
               name: data
             - mountPath: /tmp
               name: tmp
-            # - mountPath: /home/foundry/aws
-            #   name: aws-config
+            - mountPath: /home/foundry/aws
+              name: aws-config
           ports:
             - containerPort: 30000
               name: http
