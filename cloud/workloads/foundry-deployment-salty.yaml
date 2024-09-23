@@ -93,6 +93,8 @@ spec:
               value: "true"
             - name: FOUNDRY_TELEMETRY
               value: "true"
+            - name: FOUNDRY_WORLD
+              value: "tomb-of-annhiliation"
           livenessProbe:
             initialDelaySeconds: 600
             failureThreshold: 10
