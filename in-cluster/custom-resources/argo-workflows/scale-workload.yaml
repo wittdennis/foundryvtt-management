@@ -3,9 +3,9 @@
 apiVersion: argoproj.io/v1alpha1
 kind: WorkflowTemplate
 metadata:
-  name: scale-deployment
+  name: scale-workload
 spec:
-  entrypoint: scale-deployment
+  entrypoint: scale-workload
   artifactGC:
     strategy: OnWorkflowDeletion
     serviceAccountName: foundry-workflows
@@ -20,16 +20,19 @@ spec:
   arguments:
     parameters:
       - name: replicaCount
-      - name: deployment
+      - name: name
         default: foundry
+      - name: type
+        default: statefulset
   templates:
-    - name: scale-deployment
+    - name: scale-workload
       serviceAccountName: foundry-workflows
       automountServiceAccountToken: true
       inputs:
         parameters:
           - name: replicaCount
-          - name: deployment
+          - name: name
+          - name: type
       container:
         image: bitnami/kubectl:1.31.3 # renovate
         command:
@@ -39,7 +42,7 @@ spec:
           - |
             set -eu
 
-            kubectl scale --replicas={{inputs.parameters.replicaCount}} -n foundry deployment/{{inputs.parameters.deployment}}
+            kubectl scale --replicas={{inputs.parameters.replicaCount}} -n foundry {{inputs.parameters.type}}/{{inputs.parameters.name}}
       securityContext:
         runAsUser: 1000
         runAsGroup: 1000
