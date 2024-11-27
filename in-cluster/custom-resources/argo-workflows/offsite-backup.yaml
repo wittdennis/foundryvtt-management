@@ -19,7 +19,7 @@ spec:
   volumes:
     - name: foundry-data
       persistentVolumeClaim:
-        claimName: foundry-data-pvc
+        claimName: data-test-foundryvtt-0
     - name: tmp
       emptyDir: {}
   templates:
@@ -28,13 +28,15 @@ spec:
         - - name: scale-down
             arguments:
               parameters:
-                - name: deployment
-                  value: foundry
+                - name: name
+                  value: test-foundryvtt
                 - name: replicaCount
                   value: "0"
+                - name: type
+                  value: statefulset
             templateRef:
-              template: scale-deployment
-              name: scale-deployment
+              template: scale-workload
+              name: scale-workload
         - - name: create-backup
             template: archive-data
         - - name: upload-backup
@@ -49,13 +51,15 @@ spec:
         - - name: scale-up
             arguments:
               parameters:
-                - name: deployment
-                  value: foundry
+                - name: name
+                  value: test-foundryvtt
                 - name: replicaCount
                   value: "1"
+                - name: type
+                  value: statefulset
             templateRef:
-              template: scale-deployment
-              name: scale-deployment
+              template: scale-workload
+              name: scale-workload
 
     - name: archive-data
       serviceAccountName: foundry-workflows
