@@ -15,13 +15,14 @@ spec:
     namespace: foundry
   source:
     repoURL: https://charts.derwitt.dev
-    targetRevision: 0.1.0
+    targetRevision: 0.1.2
     chart: foundryvtt
     helm:
       releaseName: test
       values: |
 
-        enableTelemetry: true
+        config:
+          enableTelemetry: true
         existingSecret:
           containsLicenseKey: true
           containsAwsConfig: true
