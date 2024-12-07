@@ -8,7 +8,7 @@ D&D 5e: 3.3.1 # renovate: datasource=github-releases depName=foundryvtt/dnd5e ex
 
 ## Modules
 
-DDB-Importer: 5.2.38 # renovate: datasource=github-tags depName=MrPrimate/ddb-importer versioning=semver
+DDB-Importer: 5.2.39 # renovate: datasource=github-tags depName=MrPrimate/ddb-importer versioning=semver
 Dice So Nice!: 5.1.3 # renovate: datasource=gitlab-tags depName=riccisi/foundryvtt-dice-so-nice versioning=semver
 Dice Tray: 2.2.5 # renovate: datasource=github-releases depName=mclemente/fvtt-dice-tray versioning=semver
 Magic Items: 4.2.5 # renovate: datasource=github-releases depName=PwQt/magic-items-2 versioning=semver
