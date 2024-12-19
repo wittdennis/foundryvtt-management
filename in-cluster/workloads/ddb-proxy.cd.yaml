@@ -1,0 +1,45 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: in-cluster-ddb-proxy-test
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: foundry
+  syncPolicy:
+    automated:
+      prune: true
+  destination:
+    name: in-cluster
+    namespace: foundry
+  source:
+    repoURL: https://charts.derwitt.dev
+    targetRevision: 1.0.0
+    chart: ddb-proxy
+    helm:
+      releaseName: test
+      values: |
+
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            memory: 128Mi
+        ingress:
+          enabled: true
+          className: traefik
+          annotations:
+            cert-manager.io/cluster-issuer: cloudflare-cluster-issuer
+            traefik.ingress.kubernetes.io/router.middlewares: traefik-redirect-to-https@kubernetescrd
+            external-dns.alpha.kubernetes.io/target: 172.30.0.5, 2a01:4f8:c012:f0b3:ac1e::5
+          hosts:
+            - host: ddb-proxy.home.derwitt.net
+              paths:
+                - path: /
+                  pathType: ImplementationSpecific
+          tls:
+            - hosts:
+                - ddb-proxy.home.derwitt.net
+              secretName: ddb-proxy-ingress-tls
