@@ -1,0 +1,27 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: foundry-argo-apps-bootstrapper
+  namespace: foundry
+spec:
+  generators:
+    - clusters: {}
+  template:
+    metadata:
+      name: "{{ nameNormalized }}-foundry-argo-apps-bootstrapper"
+      namespace: foundry
+    spec:
+      project: foundry
+      syncPolicy:
+        automated:
+          prune: true
+      source:
+        repoURL: https://github.com/wittdennis/foundryvtt-management
+        targetRevision: HEAD
+        path: "argo-apps/{{ nameNormalized }}"
+        directory:
+          recurse: true
+      destination:
+        name: in-cluster
+        namespace: foundry

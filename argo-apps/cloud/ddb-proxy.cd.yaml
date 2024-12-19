@@ -1,0 +1,44 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cloud-ddb-proxy
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: foundry
+  syncPolicy:
+    automated:
+      prune: true
+  destination:
+    name: cloud
+    namespace: foundry
+  source:
+    repoURL: https://charts.derwitt.dev
+    targetRevision: 1.0.0
+    chart: ddb-proxy
+    helm:
+      releaseName: global
+      values: |
+
+        replicaCount: 2
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            memory: 128Mi
+        ingress:
+          enabled: true
+          className: nginx
+          annotations:
+            cert-manager.io/cluster-issuer: letsencrypt
+          hosts:
+            - host: ddb-proxy.derwitt.dev
+              paths:
+                - path: /
+                  pathType: ImplementationSpecific
+          tls:
+            - hosts:
+                - ddb-proxy.derwitt.dev
+              secretName: ddb-proxy-ingress-tls

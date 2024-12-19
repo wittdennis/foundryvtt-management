@@ -12,8 +12,7 @@ spec:
   endpointSelector:
     matchLabels:
       app.kubernetes.io/name: ddb-proxy
-      app.kubernetes.io/component: ddb-proxy
-      app.kubernetes.io/part-of: foundry
+      app.kubernetes.io/instance: global
   egress:
     - toEndpoints:
         - matchLabels:
