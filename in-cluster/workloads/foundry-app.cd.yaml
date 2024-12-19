@@ -15,7 +15,7 @@ spec:
     namespace: foundry
   source:
     repoURL: https://charts.derwitt.dev
-    targetRevision: 12.0.1
+    targetRevision: 12.0.2
     chart: foundryvtt
     helm:
       releaseName: test
