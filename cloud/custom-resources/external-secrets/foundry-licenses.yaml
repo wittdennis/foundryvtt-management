@@ -23,8 +23,3 @@ spec:
         key: /license
         property: foundry-license-key
       secretKey: foundry-license-key
-    - remoteRef:
-        conversionStrategy: Default
-        key: /license
-        property: foundry-saltysausage-license-key
-      secretKey: foundry-saltysausage-license-key

@@ -2,9 +2,9 @@
 # apiVersion: cilium.io/v2
 # kind: CiliumNetworkPolicy
 # metadata:
-#   name: foundry-egress-policy
+#   name: foundry-saltysauasage-egress-policy
 #   labels:
-#     app.kubernetes.io/name: foundry-egress-policy
+#     app.kubernetes.io/name: foundry-saltysausage-egress-policy
 #     app.kubernetes.io/component: foundry
 #     app.kubernetes.io/part-of: foundry
 #     app.kubernetes.io/managed-by: argocd
@@ -12,6 +12,7 @@
 #   endpointSelector:
 #     matchLabels:
 #       app.kubernetes.io/name: foundryvtt
+#       app.kubernetes.io/instance: saltysausage
 #   egress:
 #     - toEndpoints:
 #         - matchLabels:

@@ -25,9 +25,9 @@ spec:
             arguments:
               parameters:
                 - name: instance
-                  value: foundry-saltysausage
+                  value: saltysausage-foundryvtt
                 - name: pvc-name
-                  value: foundry-saltysausage-data-pvc
+                  value: data-saltysausage-foundryvtt-0
             templateRef:
               name: foundry-backup-restore-template
               template: main
@@ -39,11 +39,11 @@ spec:
             arguments:
               parameters:
                 - name: name
-                  value: foundry-saltysausage
+                  value: saltysausage-foundryvtt
                 - name: replicaCount
                   value: "1"
                 - name: type
-                  value: deployment
+                  value: statefulset
             templateRef:
               template: scale-workload
               name: scale-workload
