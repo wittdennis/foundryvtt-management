@@ -1,0 +1,149 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/argoproj/argo-workflows/main/api/jsonschema/schema.json
+---
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: foundry-backup-template
+spec:
+  entrypoint: main
+  artifactGC:
+    strategy: OnWorkflowDeletion
+    serviceAccountName: foundry-workflows
+  securityContext:
+    allowPrivilegeEscalation: false
+    readOnlyRootFilesystem: true
+    runAsNonRoot: true
+    seccompProfile:
+      type: RuntimeDefault
+  arguments:
+    parameters:
+      - name: instance
+      - name: restic-hostname
+      - name: pvc-name
+  templates:
+    - name: main
+      inputs:
+        parameters:
+          - name: instance
+          - name: restic-hostname
+          - name: pvc-name
+      steps:
+        - - name: scale-down
+            arguments:
+              parameters:
+                - name: name
+                  value: "{{inputs.parameters.instance}}"
+                - name: replicaCount
+                  value: "0"
+                - name: type
+                  value: deployment
+            templateRef:
+              template: scale-workload
+              name: scale-workload
+        - - name: create-backup
+            arguments:
+              parameters:
+                - name: pvc-name
+                  value: "{{inputs.parameters.pvc-name}}"
+            template: archive-data
+        - - name: upload-backup
+            template: upload-backup
+            arguments:
+              parameters:
+                - name: restic-hostname
+                  value: "{{inputs.parameters.restic-hostname}}"
+              artifacts:
+                - name: backup-archive
+                  from: "{{steps.create-backup.outputs.artifacts.backup-archive}}"
+
+    - name: archive-data
+      serviceAccountName: foundry-workflows
+      inputs:
+        parameters:
+          - name: pvc-name
+      volumes:
+        - name: tmp
+          emptyDir: {}
+        - name: foundry-data
+          persistentVolumeClaim:
+            claimName: "{{inputs.parameters.pvc-name}}"
+      outputs:
+        artifacts:
+          - name: backup-archive
+            path: /tmp/foundry-data.tar.xz
+            s3:
+              key: "{{workflow.name}}/foundry-data.tar.xz"
+      container:
+        image: denniswitt/tar:0.1.2 # renovate
+        workingDir: /tmp
+        command:
+          - sh
+          - -c
+        args:
+          - |
+            set -eux
+
+            tar cfJv foundry-data.tar.xz /foundry-data/Data
+            du -sch foundry-data.tar.xz
+        volumeMounts:
+          - mountPath: /tmp
+            name: tmp
+          - mountPath: /foundry-data
+            name: foundry-data
+        securityContext:
+          runAsUser: 1000
+          runAsGroup: 1000
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          seccompProfile:
+            type: RuntimeDefault
+
+    - name: upload-backup
+      serviceAccountName: foundry-workflows
+      volumes:
+        - name: tmp
+          emptyDir: {}
+      inputs:
+        parameters:
+          - name: restic-hostname
+        artifacts:
+          - name: backup-archive
+            path: /tmp/foundry-data.tar.xz
+      container:
+        image: restic/restic:0.17.3 # renovate
+        command: [sh, -c]
+        args:
+          - |
+            restic init --no-cache || true
+            restic backup --no-cache --host {{inputs.parameters.restic-hostname}} /tmp/foundry-data.tar.xz
+            restic forget --no-cache --host {{inputs.parameters.restic-hostname}} --keep-last 90 --prune
+        env:
+          - name: AZURE_ACCOUNT_NAME
+            valueFrom:
+              secretKeyRef:
+                name: backup-settings
+                key: azure-account-name
+          - name: AZURE_ACCOUNT_KEY
+            valueFrom:
+              secretKeyRef:
+                name: backup-settings
+                key: azure-account-key
+          - name: RESTIC_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: backup-settings
+                key: restic-password
+          - name: RESTIC_REPOSITORY
+            value: azure:foundry:/
+        volumeMounts:
+          - mountPath: /tmp
+            name: tmp
+        securityContext:
+          runAsUser: 1000
+          runAsGroup: 1000
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          seccompProfile:
+            type: RuntimeDefault

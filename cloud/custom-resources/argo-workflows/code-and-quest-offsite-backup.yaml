@@ -1,0 +1,54 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/argoproj/argo-workflows/main/api/jsonschema/schema.json
+---
+apiVersion: argoproj.io/v1alpha1
+kind: CronWorkflow
+metadata:
+  name: code-and-quest-offsite-backup
+spec:
+  schedule: "30 3 * * *"
+  concurrencyPolicy: "Replace"
+  startingDeadlineSeconds: 0
+  successfulJobsHistoryLimit: 7
+  workflowSpec:
+    entrypoint: main
+    onExit: exit-handler
+    artifactGC:
+      strategy: OnWorkflowDeletion
+      serviceAccountName: foundry-workflows
+    securityContext:
+      allowPrivilegeEscalation: false
+      readOnlyRootFilesystem: true
+      runAsNonRoot: true
+      seccompProfile:
+        type: RuntimeDefault
+    templates:
+      - name: main
+        dag:
+          tasks:
+            - name: backup
+              templateRef:
+                name: foundry-backup-template
+                template: main
+              arguments:
+                parameters:
+                  - name: instance
+                    value: foundry
+                  - name: restic-hostname
+                    value: foundry-data
+                  - name: pvc-name
+                    value: foundry-data-pvc
+
+      - name: exit-handler
+        steps:
+          - - name: scale-up
+              arguments:
+                parameters:
+                  - name: name
+                    value: foundry
+                  - name: replicaCount
+                    value: "1"
+                  - name: type
+                    value: deployment
+              templateRef:
+                template: scale-workload
+                name: scale-workload

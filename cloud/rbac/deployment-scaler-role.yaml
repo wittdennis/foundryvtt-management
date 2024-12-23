@@ -8,6 +8,7 @@ rules:
       - get
     resources:
       - deployments
+      - statefulsets
     apiGroups:
       - apps
   - verbs:
@@ -15,5 +16,6 @@ rules:
       - update
     resources:
       - deployments/scale
+      - statefulsets/scale
     apiGroups:
       - apps

@@ -1,0 +1,49 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/argoproj/argo-workflows/main/api/jsonschema/schema.json
+---
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: saltysausage-backup-restore
+spec:
+  entrypoint: main
+  serviceAccountName: foundry-workflows
+  onExit: exit-handler
+  artifactGC:
+    strategy: OnWorkflowDeletion
+    serviceAccountName: foundry-workflows
+  securityContext:
+    allowPrivilegeEscalation: false
+    readOnlyRootFilesystem: true
+    runAsNonRoot: true
+    seccompProfile:
+      type: RuntimeDefault
+  templates:
+    - name: main
+      dag:
+        tasks:
+          - name: restore
+            arguments:
+              parameters:
+                - name: instance
+                  value: foundry-saltysausage
+                - name: pvc-name
+                  value: foundry-saltysausage-data-pvc
+            templateRef:
+              name: foundry-backup-restore-template
+              template: main
+
+    - name: exit-handler
+      dag:
+        tasks:
+          - name: scale-up
+            arguments:
+              parameters:
+                - name: name
+                  value: foundry-saltysausage
+                - name: replicaCount
+                  value: "1"
+                - name: type
+                  value: deployment
+            templateRef:
+              template: scale-workload
+              name: scale-workload

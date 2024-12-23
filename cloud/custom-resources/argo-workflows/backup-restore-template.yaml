@@ -3,10 +3,9 @@
 apiVersion: argoproj.io/v1alpha1
 kind: WorkflowTemplate
 metadata:
-  name: foundry-backup-restore
+  name: foundry-backup-restore-template
 spec:
-  entrypoint: restore
-  onExit: exit-handler
+  entrypoint: main
   serviceAccountName: foundry-workflows
   artifactGC:
     strategy: OnWorkflowDeletion
@@ -17,14 +16,16 @@ spec:
     runAsNonRoot: true
     seccompProfile:
       type: RuntimeDefault
-  volumes:
-    - name: foundry-data
-      persistentVolumeClaim:
-        claimName: foundry-data-pvc
-    - name: tmp
-      emptyDir: {}
+  arguments:
+    parameters:
+      - name: instance
+      - name: pvc-name
   templates:
-    - name: restore
+    - name: main
+      inputs:
+        parameters:
+          - name: instance
+          - name: pvc-name
       steps:
         - - name: list-snapshots
             template: list-snapshots
@@ -39,21 +40,29 @@ spec:
         - - name: scale-down
             arguments:
               parameters:
-                - name: deployment
-                  value: foundry
+                - name: name
+                  value: "{{inputs.parameters.instance}}"
                 - name: replicaCount
                   value: "0"
+                - name: type
+                  value: deployment
             templateRef:
-              template: scale-deployment
-              name: scale-deployment
+              template: scale-workload
+              name: scale-workload
         - - name: restore-data
             template: restore-data
             arguments:
+              parameters:
+                - name: pvc-name
+                  value: "{{inputs.parameters.pvc-name}}"
               artifacts:
                 - name: backup-archive
                   from: "{{steps.download-snapshot.outputs.artifacts.backup-archive}}"
 
     - name: list-snapshots
+      volumes:
+        - name: tmp
+          emptyDir: {}
       container:
         image: restic/restic:0.17.3 # renovate
         command: [sh, -c]
@@ -112,6 +121,9 @@ spec:
       inputs:
         parameters:
           - name: snapshotId
+      volumes:
+        - name: tmp
+          emptyDir: {}
       outputs:
         artifacts:
           - name: backup-archive
@@ -162,9 +174,17 @@ spec:
     - name: restore-data
       serviceAccountName: foundry-workflows
       inputs:
+        parameters:
+          - name: pvc-name
         artifacts:
           - name: backup-archive
             path: /tmp/foundry-data.tar.xz
+      volumes:
+        - name: foundry-data
+          persistentVolumeClaim:
+            claimName: "{{inputs.parameters.pvc-name}}"
+        - name: tmp
+          emptyDir: {}
       container:
         image: denniswitt/tar:0.1.2 # renovate
         workingDir: /tmp
@@ -189,16 +209,3 @@ spec:
           runAsNonRoot: false
           seccompProfile:
             type: RuntimeDefault
-
-    - name: exit-handler
-      steps:
-        - - name: scale-up
-            arguments:
-              parameters:
-                - name: deployment
-                  value: foundry
-                - name: replicaCount
-                  value: "1"
-            templateRef:
-              template: scale-deployment
-              name: scale-deployment
