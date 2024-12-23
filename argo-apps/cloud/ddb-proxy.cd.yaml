@@ -22,6 +22,9 @@ spec:
       values: |
 
         replicaCount: 2
+        podLabels:
+          networking.k8s.io/apply-network-policy: allow-world-http-ingress
+          network-policy/allow-dndbeyond-egress: apply
         resources:
           requests:
             cpu: 50m

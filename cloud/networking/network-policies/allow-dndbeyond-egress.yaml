@@ -1,0 +1,19 @@
+# ---
+# apiVersion: cilium.io/v2
+# kind: CiliumNetworkPolicy
+# metadata:
+#   name: allow-dndbeyond-egress
+# spec:
+#   endpointSelector:
+#     matchLabels:
+#       network-policy/allow-dndbeyond-egress: apply
+#   egress:
+#     - toFQDNs:
+#         - matchPattern: "*.dndbeyond.com"
+#         - matchName: "dndbeyond.com"
+#       toPorts:
+#         - ports:
+#             - port: "443"
+#               protocol: TCP
+#           rules:
+#             http: [{}]

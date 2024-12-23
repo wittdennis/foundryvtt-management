@@ -11,6 +11,10 @@ spec:
     serviceAccountName: foundry-workflows
   podGC:
     strategy: OnWorkflowSuccess
+  podMetadata:
+    labels:
+      network-policy/allow-kube-apiserver-traffic: apply
+      network-policy/allow-minio-traffic: apply
   securityContext:
     allowPrivilegeEscalation: false
     readOnlyRootFilesystem: true

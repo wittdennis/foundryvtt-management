@@ -31,6 +31,9 @@ spec:
         storage:
           className: longhorn
           size: 5Gi
+        podLabels:
+          network-policy/allow-world-http-ingress: apply
+          network-policy/allow-world-https-egress: apply
         resources:
           requests:
             cpu: 40m
