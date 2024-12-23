@@ -25,9 +25,9 @@ spec:
             arguments:
               parameters:
                 - name: instance
-                  value: foundry
+                  value: code-and-quest-foundryvtt
                 - name: pvc-name
-                  value: foundry-data-pvc
+                  value: data-code-and-quest-foundryvtt-0
             templateRef:
               name: foundry-backup-restore-template
               template: main
@@ -39,7 +39,7 @@ spec:
             arguments:
               parameters:
                 - name: name
-                  value: foundry
+                  value: code-and-quest-foundryvtt
                 - name: replicaCount
                   value: "1"
                 - name: type

@@ -32,11 +32,11 @@ spec:
               arguments:
                 parameters:
                   - name: instance
-                    value: foundry
+                    value: code-and-quest-foundryvtt
                   - name: restic-hostname
-                    value: foundry-data
+                    value: code-and-quest-foundryvtt
                   - name: pvc-name
-                    value: foundry-data-pvc
+                    value: data-code-and-quest-foundryvtt-0
 
       - name: exit-handler
         steps:
@@ -44,7 +44,7 @@ spec:
               arguments:
                 parameters:
                   - name: name
-                    value: foundry
+                    value: code-and-quest-foundryvtt
                   - name: replicaCount
                     value: "1"
                   - name: type

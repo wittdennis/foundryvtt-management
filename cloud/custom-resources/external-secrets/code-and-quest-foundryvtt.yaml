@@ -2,19 +2,14 @@
 apiVersion: external-secrets.io/v1beta1
 kind: ExternalSecret
 metadata:
-  name: foundry-credentials
-  labels:
-    app.kubernetes.io/name: foundry-credentials
-    app.kubernetes.io/component: foundry
-    app.kubernetes.io/part-of: foundry
-    app.kubernetes.io/managed-by: argocd
+  name: code-and-quest-foundryvtt
 spec:
   refreshInterval: 1h
   secretStoreRef:
     name: vault-backend-foundry
     kind: ClusterSecretStore
   target:
-    name: foundry-credentials
+    name: code-and-quest-foundryvtt
     creationPolicy: Owner
     deletionPolicy: Delete
   data:
@@ -28,3 +23,18 @@ spec:
         key: /credentials
         property: password
       secretKey: foundry-password
+    - remoteRef:
+        conversionStrategy: Default
+        key: /license
+        property: code-and-quest-license-key
+      secretKey: foundry-license-key
+    - remoteRef:
+        conversionStrategy: Default
+        key: /settings
+        property: code-and-quest-admin-key
+      secretKey: admin-key
+    - remoteRef:
+        conversionStrategy: Default
+        key: /settings
+        property: code-and-quest-aws-config
+      secretKey: awsConfig.json

@@ -1,0 +1,54 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cloud-foundry-code-and-quest
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: foundry
+  syncPolicy:
+    automated:
+      prune: true
+  destination:
+    name: cloud
+    namespace: foundry
+  source:
+    repoURL: https://charts.derwitt.dev
+    targetRevision: 12.0.2
+    chart: foundryvtt
+    helm:
+      releaseName: code-and-quest
+      values: |
+
+        config:
+          enableTelemetry: true
+          defaultWorld: danddhard
+        existingSecret:
+          name: code-and-quest-foundryvtt
+          containsLicenseKey: true
+          containsAwsConfig: true
+        storage:
+          className: longhorn
+          size: 5Gi
+        resources:
+          requests:
+            cpu: 40m
+            memory: 512Mi
+          limits:
+            memory: 512Mi
+        ingress:
+          enabled: true
+          className: nginx
+          annotations:
+            cert-manager.io/cluster-issuer: code-and-quest-de-letsencrypt
+            nginx.ingress.kubernetes.io/proxy-body-size: 64m
+          hosts:
+            - host: vtt.code-and-quest.de
+              paths:
+                - path: /
+                  pathType: ImplementationSpecific
+          tls:
+            - hosts:
+                - vtt.code-and-quest.de
+              secretName: foundry-code-and-quest-ingress-tls
