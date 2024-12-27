@@ -2,15 +2,16 @@
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
-  name: allow-dndbeyond-egress
+  name: allow-foundryvtt-egress
 spec:
   endpointSelector:
     matchLabels:
-      network-policy/allow-dndbeyond-egress: apply
+      network-policy/allow-foundryvtt-egress: apply
   egress:
     - toFQDNs:
-        - matchPattern: "*.dndbeyond.com"
-        - matchName: "dndbeyond.com"
+        - matchName: "r2.foundryvtt.com"
+        - matchName: "api.foundryvtt.com"
+        - matchName: "foundryvtt.com"
       toPorts:
         - ports:
             - port: "443"

@@ -2,15 +2,14 @@
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
-  name: allow-dndbeyond-egress
+  name: allow-backup-egress
 spec:
   endpointSelector:
     matchLabels:
-      network-policy/allow-dndbeyond-egress: apply
+      network-policy/allow-backup-egress: apply
   egress:
     - toFQDNs:
-        - matchPattern: "*.dndbeyond.com"
-        - matchName: "dndbeyond.com"
+        - matchName: "backups92217735.blob.core.windows.net"
       toPorts:
         - ports:
             - port: "443"

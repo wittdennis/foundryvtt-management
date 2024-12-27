@@ -1,27 +1,21 @@
-# ---
-# apiVersion: cilium.io/v2
-# kind: CiliumNetworkPolicy
-# metadata:
-#   name: allow-minio-traffic
-# spec:
-#   endpointSelector:
-#     matchLabels:
-#       network-policy/allow-minio-traffic: apply
-#   ingress:
-#     - fromEndpoints:
-#         - matchLabels:
-#             app: minio
-#             v1.min.io/tenant: default
-#             io.kubernetes.pod.namespace: storage
-#   egress:
-#     - toEndpoints:
-#         - matchLabels:
-#             app: minio
-#             v1.min.io/tenant: default
-#             io.kubernetes.pod.namespace: storage
-#       toPorts:
-#         - ports:
-#             - port: "9000"
-#               protocol: TCP
-#           rules:
-#             http: [{}]
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-minio-traffic
+spec:
+  endpointSelector:
+    matchLabels:
+      network-policy/allow-minio-traffic: apply
+  ingress:
+    - fromEndpoints:
+        - matchLabels:
+            app: minio
+            v1.min.io/tenant: default
+            io.kubernetes.pod.namespace: storage
+  egress:
+    - toEndpoints:
+        - matchLabels:
+            app: minio
+            v1.min.io/tenant: default
+            io.kubernetes.pod.namespace: storage
