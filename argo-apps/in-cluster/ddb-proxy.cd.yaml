@@ -15,7 +15,7 @@ spec:
     namespace: foundry
   source:
     repoURL: https://charts.derwitt.dev
-    targetRevision: 1.0.0
+    targetRevision: 1.0.1
     chart: ddb-proxy
     helm:
       releaseName: test
