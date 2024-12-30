@@ -1,0 +1,19 @@
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-github-egress
+spec:
+  endpointSelector:
+    matchLabels:
+      network-policy/allow-github-egress: apply
+  egress:
+    - toFQDNs:
+        - matchName: "github.com"
+        - matchPattern: "*.github.com"
+        - matchName: "githubusercontent.com"
+        - matchPattern: "*.githubusercontent.com"
+      toPorts:
+        - ports:
+            - port: "443"
+              protocol: TCP

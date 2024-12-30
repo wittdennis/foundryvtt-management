@@ -34,6 +34,7 @@ spec:
         podLabels:
           network-policy/allow-world-http-ingress: apply
           network-policy/allow-foundryvtt-egress: apply
+          network-policy/allow-github-egress: apply
         resources:
           requests:
             cpu: 40m
