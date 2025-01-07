@@ -1,0 +1,17 @@
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-gitlab-egress
+spec:
+  endpointSelector:
+    matchLabels:
+      network-policy/allow-gitlab-egress: apply
+  egress:
+    - toFQDNs:
+        - matchName: "gitlab.com"
+        - matchPattern: "*.gitlab.com"
+      toPorts:
+        - ports:
+            - port: "443"
+              protocol: TCP
