@@ -1,0 +1,17 @@
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-aws-egress
+spec:
+  endpointSelector:
+    matchLabels:
+      network-policy/allow-aws-egress: apply
+  egress:
+    - toFQDNs:
+        - matchName: "amazonaws.com"
+        - matchPattern: "*.amazonaws.com"
+      toPorts:
+        - ports:
+            - port: "443"
+              protocol: TCP

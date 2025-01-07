@@ -36,6 +36,7 @@ spec:
           network-policy/allow-foundryvtt-egress: apply
           network-policy/allow-github-egress: apply
           network-policy/allow-gitlab-egress: apply
+          network-policy/allow-aws-egress: apply
         resources:
           requests:
             cpu: 40m
