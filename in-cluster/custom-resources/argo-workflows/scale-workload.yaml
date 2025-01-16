@@ -34,7 +34,7 @@
 #           - name: name
 #           - name: type
 #       container:
-#         image: bitnami/kubectl:1.32.0 # renovate
+#         image: bitnami/kubectl:1.32.1 # renovate
 #         command:
 #           - sh
 #           - -c
