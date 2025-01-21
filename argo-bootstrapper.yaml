@@ -6,7 +6,10 @@ metadata:
   namespace: foundry
 spec:
   generators:
-    - clusters: {}
+    - clusters:
+        selector:
+          matchLabels:
+            foundryvtt: "true"
   template:
     metadata:
       name: "{{ nameNormalized }}-foundry-argo-apps-bootstrapper"
