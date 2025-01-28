@@ -10,12 +10,10 @@ spec:
   ingress:
     - fromEndpoints:
         - matchLabels:
-            app: minio
             v1.min.io/tenant: default
             io.kubernetes.pod.namespace: storage
   egress:
     - toEndpoints:
         - matchLabels:
-            app: minio
             v1.min.io/tenant: default
             io.kubernetes.pod.namespace: storage
