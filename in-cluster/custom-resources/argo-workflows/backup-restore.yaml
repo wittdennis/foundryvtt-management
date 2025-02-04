@@ -168,7 +168,7 @@
 #           - name: backup-archive
 #             path: /tmp/foundry-data.tar.xz
 #       container:
-#         image: denniswitt/tar:1.0.1 # renovate
+#         image: denniswitt/tar:1.0.2 # renovate
 #         workingDir: /tmp
 #         command:
 #           - sh
