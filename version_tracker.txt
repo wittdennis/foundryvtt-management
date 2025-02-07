@@ -18,7 +18,7 @@ Simple Calender: v2.4.18 # renovate: datasource=github-tags depName=vigoren/foun
 Tokenizer: 4.3.16 # renovate: datasource=github-tags depName=MrPrimate/tokenizer versioning=semver
 Universal Battlemap Importer: 4.0.0 # renovate: datasource=github-releases depName=moo-man/FVTT-DD-Import versioning=semver
 FxMaster: v4.1.0 # renovate: datasource=github-releases depName=ghost-fvtt/fxmaster versioning=semver-coerced
-Vision 5e: v2.5.4 # renovate: datasource=github-tags depName=dev7355608/vision-5e versioning=semver
+Vision 5e: v2.5.5 # renovate: datasource=github-tags depName=dev7355608/vision-5e versioning=semver
 routinglib: v1.1.0 # renovate: datasource=github-releases depName=manuelVo/foundryvtt-routinglib versioning=semver
 Rideable: v3.1.4 # renovate: datasource=github-releases depName=Saibot393/Rideable versioning=semver
 Popout: v2.18 # renovate: datasource=github-releases depName=League-of-Foundry-Developers/fvtt-module-popout versioning=semver-coerced
