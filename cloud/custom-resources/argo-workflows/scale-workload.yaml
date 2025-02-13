@@ -9,6 +9,10 @@ spec:
   artifactGC:
     strategy: OnWorkflowDeletion
     serviceAccountName: foundry-workflows
+    podMetadata:
+      labels:
+        network-policy/allow-minio-traffic: apply
+        network-policy/allow-kube-apiserver-traffic: apply
   podGC:
     strategy: OnWorkflowSuccess
   podMetadata:

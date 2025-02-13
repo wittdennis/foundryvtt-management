@@ -20,6 +20,10 @@ spec:
     artifactGC:
       strategy: OnWorkflowDeletion
       serviceAccountName: foundry-workflows
+      podMetadata:
+        labels:
+          network-policy/allow-minio-traffic: apply
+          network-policy/allow-kube-apiserver-traffic: apply
     securityContext:
       allowPrivilegeEscalation: false
       readOnlyRootFilesystem: true
