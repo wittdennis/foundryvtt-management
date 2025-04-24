@@ -42,7 +42,7 @@ spec:
           - name: name
           - name: type
       container:
-        image: bitnami/kubectl:1.32.4 # renovate
+        image: bitnami/kubectl:1.33.0 # renovate
         command:
           - sh
           - -c
