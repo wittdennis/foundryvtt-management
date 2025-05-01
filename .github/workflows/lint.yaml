@@ -5,6 +5,6 @@ on:
 
 jobs:
   yaml-lint:
-    uses: wittdennis/pipelines/.github/workflows/yaml-lint.yaml@1.11.15
+    uses: wittdennis/pipelines/.github/workflows/yaml-lint.yaml@1.11.16
     with:
       yamllint-path: .yamllint
