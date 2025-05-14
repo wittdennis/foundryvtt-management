@@ -28,4 +28,4 @@ Wall Height: 6.1.2 # renovate: datasource=github-releases depName=theripper93/wa
 libWrapper: v1.13.2.0 # renovate: datasource=github-releases depName=ruipin/fvtt-lib-wrapper versioning=semver
 Levels: 5.5.4 # renovate: datasource=github-releases depName=theripper93/Levels versioning=semver
 The Ripper Premium Hub: 4.1.4 # renovate: datasource=github-releases depName=theripper93/theripper-premium-hub versioning=semver
-Pixels Dice: 1.0.1 # renovate: datasource=github-tags depName=foundryvtt/pixels versioning=semver
+Pixels Dice: 1.0.2 # renovate: datasource=github-tags depName=foundryvtt/pixels versioning=semver
