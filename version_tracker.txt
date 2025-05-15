@@ -24,7 +24,7 @@ routinglib: v1.1.0 # renovate: datasource=github-releases depName=manuelVo/found
 Rideable: v4.0.0 # renovate: datasource=github-releases depName=Saibot393/Rideable versioning=semver
 Popout: v2.18 # renovate: datasource=github-releases depName=League-of-Foundry-Developers/fvtt-module-popout versioning=semver-coerced
 Torch: v2.21.1 # renovate: datasource=github-releases depName=League-of-Foundry-Developers/Torch versioning=semver
-Wall Height: 6.1.2 # renovate: datasource=github-releases depName=theripper93/wall-height versioning=semver
+Wall Height: 7.0.3 # renovate: datasource=github-releases depName=theripper93/wall-height versioning=semver
 libWrapper: v1.13.2.0 # renovate: datasource=github-releases depName=ruipin/fvtt-lib-wrapper versioning=semver
 Levels: 5.5.4 # renovate: datasource=github-releases depName=theripper93/Levels versioning=semver
 The Ripper Premium Hub: 4.1.4 # renovate: datasource=github-releases depName=theripper93/theripper-premium-hub versioning=semver
