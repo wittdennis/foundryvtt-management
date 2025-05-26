@@ -7,22 +7,14 @@ metadata:
 spec:
     endpointSelector: {}
     egress:
-        # DNS
         - toEndpoints:
               - matchLabels:
-                    io.kubernetes.pod.namespace: kube-system
-                    k8s-app: kube-dns
+                    "k8s:io.kubernetes.pod.namespace": kube-system
+                    "k8s:k8s-app": kube-dns
           toPorts:
               - ports:
                     - port: "53"
-                      protocol: UDP
+                      protocol: ANY
                 rules:
                     dns:
                         - matchPattern: "*"
-        # ingress-nginx
-        - toEndpoints:
-              - matchLabels:
-                    app.kubernetes.io/name: ingress-nginx
-                    app.kubernetes.io/instance: ingress-nginx
-                    app.kubernetes.io/component: controller
-                    io.kubernetes.pod.namespace: ingress-nginx
