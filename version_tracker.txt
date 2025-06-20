@@ -22,7 +22,7 @@ FxMaster: v5.0.1 # renovate: datasource=github-releases depName=ghost-fvtt/fxmas
 Vision 5e: v3.0.5 # renovate: datasource=github-tags depName=dev7355608/vision-5e versioning=semver
 routinglib: v1.1.0 # renovate: datasource=github-releases depName=manuelVo/foundryvtt-routinglib versioning=semver
 Rideable: v4.0.3 # renovate: datasource=github-releases depName=Saibot393/Rideable versioning=semver
-Popout: v2.19 # renovate: datasource=github-releases depName=League-of-Foundry-Developers/fvtt-module-popout versioning=semver-coerced
+Popout: v2.20 # renovate: datasource=github-releases depName=League-of-Foundry-Developers/fvtt-module-popout versioning=semver-coerced
 Torch: v2.21.1 # renovate: datasource=github-releases depName=League-of-Foundry-Developers/Torch versioning=semver
 Wall Height: 7.0.8 # renovate: datasource=github-releases depName=theripper93/wall-height versioning=semver
 libWrapper: v1.13.2.0 # renovate: datasource=github-releases depName=ruipin/fvtt-lib-wrapper versioning=semver
