@@ -26,6 +26,6 @@ Popout: v2.21 # renovate: datasource=github-releases depName=League-of-Foundry-D
 Torch: v3.0.1 # renovate: datasource=github-releases depName=League-of-Foundry-Developers/Torch versioning=semver
 Wall Height: 7.0.8 # renovate: datasource=github-releases depName=theripper93/wall-height versioning=semver
 libWrapper: v1.13.2.0 # renovate: datasource=github-releases depName=ruipin/fvtt-lib-wrapper versioning=semver
-Levels: 6.0.13 # renovate: datasource=github-releases depName=theripper93/Levels versioning=semver
+Levels: 6.0.14 # renovate: datasource=github-releases depName=theripper93/Levels versioning=semver
 The Ripper Premium Hub: 5.0.5 # renovate: datasource=github-releases depName=theripper93/theripper-premium-hub versioning=semver
 Pixels Dice: 1.0.2 # renovate: datasource=github-tags depName=foundryvtt/pixels versioning=semver
