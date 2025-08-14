@@ -15,7 +15,7 @@ spec:
     namespace: foundry
   source:
     repoURL: https://charts.derwitt.dev
-    targetRevision: 14.0.3
+    targetRevision: 14.1.0
     chart: foundryvtt
     helm:
       releaseName: saltysausage
