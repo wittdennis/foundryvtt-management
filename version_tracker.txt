@@ -22,7 +22,7 @@ Universal Battlemap Importer: 5.0.1 # renovate: datasource=github-releases depNa
 FxMaster: v6.0.9 # renovate: datasource=github-releases depName=ghost-fvtt/fxmaster versioning=semver-coerced
 Vision 5e: v3.0.6 # renovate: datasource=github-tags depName=dev7355608/vision-5e versioning=semver
 routinglib: v1.1.0 # renovate: datasource=github-releases depName=manuelVo/foundryvtt-routinglib versioning=semver
-Rideable: v4.0.7 # renovate: datasource=github-releases depName=Saibot393/Rideable versioning=semver
+Rideable: v4.0.11 # renovate: datasource=github-releases depName=Saibot393/Rideable versioning=semver
 Popout: v2.21 # renovate: datasource=github-releases depName=League-of-Foundry-Developers/fvtt-module-popout versioning=semver-coerced
 Torch: v3.1.0 # renovate: datasource=github-releases depName=League-of-Foundry-Developers/Torch versioning=semver
 Wall Height: 7.0.8 # renovate: datasource=github-releases depName=theripper93/wall-height versioning=semver
