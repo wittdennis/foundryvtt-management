@@ -10,7 +10,7 @@ Daggerheart: 1.1.2 # renovate: datasource=github-tags depName=Foundryborne/dagge
 
 ## Modules
 
-DDB-Importer: 6.5.4 # renovate: datasource=github-tags depName=MrPrimate/ddb-importer versioning=semver
+DDB-Importer: 6.5.5 # renovate: datasource=github-tags depName=MrPrimate/ddb-importer versioning=semver
 Dice So Nice!: 5.2.2 # renovate: datasource=gitlab-tags depName=riccisi/foundryvtt-dice-so-nice versioning=semver
 Dice Tray: 3.4.6 # renovate: datasource=github-releases depName=mclemente/fvtt-dice-tray versioning=semver
 Magic Items: 4.3.3 # renovate: datasource=github-releases depName=PwQt/magic-items-2 versioning=semver
