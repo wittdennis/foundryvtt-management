@@ -102,7 +102,7 @@
 #           - name: backup-archive
 #             path: /tmp/foundry-data.tar.xz
 #       container:
-#         image: restic/restic:0.18.0 # renovate
+#         image: restic/restic:0.18.1 # renovate
 #         command: [sh, -c]
 #         args:
 #           - |
