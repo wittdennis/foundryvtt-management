@@ -2,7 +2,7 @@
 # apiVersion: argoproj.io/v1alpha1
 # kind: Application
 # metadata:
-#   name: in-cluster-ddb-proxy-test
+#   name: homelab-ddb-proxy-test
 #   finalizers:
 #     - resources-finalizer.argocd.argoproj.io
 # spec:
@@ -11,7 +11,7 @@
 #     automated:
 #       prune: true
 #   destination:
-#     name: in-cluster
+#     name: homelab
 #     namespace: foundry
 #   source:
 #     repoURL: https://charts.derwitt.dev
