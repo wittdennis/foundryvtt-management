@@ -42,7 +42,7 @@ spec:
           - name: name
           - name: type
       container:
-        image: registry.k8s.io/kubectl:1.33.4 # renovate
+        image: registry.k8s.io/kubectl:1.34.1 # renovate
         command:
           - sh
           - -c
