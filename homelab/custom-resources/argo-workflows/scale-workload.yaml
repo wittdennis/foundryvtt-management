@@ -34,7 +34,7 @@
 #           - name: name
 #           - name: type
 #       container:
-#         image: registry.k8s.io/kubectl:v1.34.1 # renovate
+#         image: denniswitt/devops-tools:1.0.0 # renovate
 #         command:
 #           - sh
 #           - -c
