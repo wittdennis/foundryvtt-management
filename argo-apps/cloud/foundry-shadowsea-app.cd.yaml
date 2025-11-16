@@ -1,0 +1,60 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cloud-foundry-shadowsea
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: foundry
+  syncPolicy:
+    automated:
+      prune: true
+  destination:
+    name: cloud
+    namespace: foundry
+  source:
+    repoURL: https://charts.derwitt.dev
+    targetRevision: 14.1.2
+    chart: foundryvtt
+    helm:
+      releaseName: shadowsea
+      values: |
+
+        config:
+          enableTelemetry: true
+          defaultWorld: runninghot
+        existingSecret:
+          name: shadowsea-foundryvtt
+          containsLicenseKey: true
+          containsAwsConfig: false
+        storage:
+          className: hcloud-volumes
+          size: 10Gi
+        podLabels:
+          network-policy/allow-world-http-ingress: apply
+          network-policy/allow-foundryvtt-egress: apply
+          network-policy/allow-github-egress: apply
+          network-policy/allow-gitlab-egress: apply
+          network-policy/allow-aws-egress: apply
+        resources:
+          requests:
+            cpu: 40m
+            memory: 512Mi
+          limits:
+            memory: 512Mi
+        ingress:
+          enabled: true
+          className: nginx
+          annotations:
+            cert-manager.io/cluster-issuer: shadowsea-xyz-letsencrypt
+            nginx.ingress.kubernetes.io/proxy-body-size: 64m
+          hosts:
+            - host: vtt.shadowsea.xyz
+              paths:
+                - path: /
+                  pathType: ImplementationSpecific
+          tls:
+            - hosts:
+                - vtt.shadowsea.xyz
+              secretName: foundry-shadowsea-ingress-tls

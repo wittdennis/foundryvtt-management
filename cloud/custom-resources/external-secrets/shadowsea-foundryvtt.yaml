@@ -1,0 +1,35 @@
+---
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: shadowsea-foundryvtt
+spec:
+  refreshInterval: 1h
+  secretStoreRef:
+    name: vault-backend-foundry
+    kind: ClusterSecretStore
+  target:
+    name: shadowsea-foundryvtt
+    creationPolicy: Owner
+    deletionPolicy: Delete
+  data:
+    - remoteRef:
+        conversionStrategy: Default
+        key: /credentials
+        property: username
+      secretKey: foundry-username
+    - remoteRef:
+        conversionStrategy: Default
+        key: /credentials
+        property: password
+      secretKey: foundry-password
+    - remoteRef:
+        conversionStrategy: Default
+        key: /license
+        property: shadowsea-license-key
+      secretKey: foundry-license-key
+    - remoteRef:
+        conversionStrategy: Default
+        key: /settings
+        property: shadowsea-admin-key
+      secretKey: admin-key
