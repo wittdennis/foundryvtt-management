@@ -23,7 +23,7 @@ spec:
 
         config:
           enableTelemetry: true
-          defaultWorld: runninghot
+          defaultWorld: running-hot
         existingSecret:
           name: shadowsea-foundryvtt
           containsLicenseKey: true
