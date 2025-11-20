@@ -3,21 +3,21 @@
 apiVersion: argoproj.io/v1alpha1
 kind: CronWorkflow
 metadata:
-  name: code-and-quest-offsite-backup
+  name: shadowsea-offsite-backup
 spec:
   schedules:
-    - "30 3 * * *"
+    - "23 5 * * *"
   concurrencyPolicy: "Replace"
   startingDeadlineSeconds: 0
   successfulJobsHistoryLimit: 7
   workflowSpec:
-    entrypoint: main
-    onExit: exit-handler
     podMetadata:
       labels:
         network-policy/allow-minio-traffic: apply
         network-policy/allow-kube-apiserver-traffic: apply
         network-policy/allow-backup-egress: apply
+    entrypoint: main
+    onExit: exit-handler
     artifactGC:
       strategy: OnWorkflowDeletion
       serviceAccountName: foundry-workflows
@@ -42,11 +42,11 @@ spec:
               arguments:
                 parameters:
                   - name: instance
-                    value: code-and-quest-foundryvtt
+                    value: shadowsea-foundryvtt
                   - name: restic-hostname
-                    value: code-and-quest-foundryvtt
+                    value: shadowsea-foundryvtt
                   - name: pvc-name
-                    value: data-code-and-quest-foundryvtt-0
+                    value: data-shadowsea-foundryvtt-0
 
       - name: exit-handler
         steps:
@@ -54,7 +54,7 @@ spec:
               arguments:
                 parameters:
                   - name: name
-                    value: code-and-quest-foundryvtt
+                    value: shadowsea-foundryvtt
                   - name: replicaCount
                     value: "1"
                   - name: type

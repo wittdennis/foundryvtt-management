@@ -1,0 +1,58 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/argoproj/argo-workflows/main/api/jsonschema/schema.json
+---
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: shadowsea-backup-restore
+spec:
+  entrypoint: main
+  serviceAccountName: foundry-workflows
+  onExit: exit-handler
+  podMetadata:
+    labels:
+      network-policy/allow-minio-traffic: apply
+      network-policy/allow-kube-apiserver-traffic: apply
+      network-policy/allow-backup-egress: apply
+  artifactGC:
+    strategy: OnWorkflowDeletion
+    serviceAccountName: foundry-workflows
+    podMetadata:
+      labels:
+        network-policy/allow-minio-traffic: apply
+        network-policy/allow-kube-apiserver-traffic: apply
+  securityContext:
+    allowPrivilegeEscalation: false
+    readOnlyRootFilesystem: true
+    runAsNonRoot: true
+    seccompProfile:
+      type: RuntimeDefault
+  templates:
+    - name: main
+      dag:
+        tasks:
+          - name: restore
+            arguments:
+              parameters:
+                - name: instance
+                  value: shadowsea-foundryvtt
+                - name: pvc-name
+                  value: data-shadowsea-foundryvtt-0
+            templateRef:
+              name: foundry-backup-restore-template
+              template: main
+
+    - name: exit-handler
+      dag:
+        tasks:
+          - name: scale-up
+            arguments:
+              parameters:
+                - name: name
+                  value: shadowsea-foundryvtt
+                - name: replicaCount
+                  value: "1"
+                - name: type
+                  value: statefulset
+            templateRef:
+              template: scale-workload
+              name: scale-workload

@@ -5,7 +5,8 @@ kind: CronWorkflow
 metadata:
   name: saltysausage-offsite-backup
 spec:
-  schedule: "14 2 * * *"
+  schedules:
+    - "14 2 * * *"
   concurrencyPolicy: "Replace"
   startingDeadlineSeconds: 0
   successfulJobsHistoryLimit: 7
