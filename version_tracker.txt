@@ -32,4 +32,4 @@ Levels: 6.0.18 # renovate: datasource=github-releases depName=theripper93/Levels
 The Ripper Premium Hub: 5.0.7 # renovate: datasource=github-releases depName=theripper93/theripper-premium-hub versioning=semver
 Pixels Dice: 1.0.3 # renovate: datasource=github-tags depName=foundryvtt/pixels versioning=semver
 Global Progress Clocks: 1.1.0 # renovate: datasource=github-releases depName=CarlosFdez/global-progress-clocks versioning=semver
-Clockworks: 1.4.0 # renovate: datasource=github-tags depName=BluSunrize/fvtt-clockworks versioning=semver
+Clockworks: 1.5.1 # renovate: datasource=github-tags depName=BluSunrize/fvtt-clockworks versioning=semver
