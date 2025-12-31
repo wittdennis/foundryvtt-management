@@ -186,7 +186,7 @@ spec:
         - name: tmp
           emptyDir: {}
       container:
-        image: denniswitt/tar:1.0.10 # renovate
+        image: denniswitt/tar:1.0.20 # renovate
         workingDir: /tmp
         command:
           - sh
