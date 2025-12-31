@@ -42,7 +42,7 @@ spec:
           - name: name
           - name: type
       container:
-        image: denniswitt/devops-tools:1.1.5 # renovate
+        image: denniswitt/devops-tools:1.1.6 # renovate
         command:
           - sh
           - -c
