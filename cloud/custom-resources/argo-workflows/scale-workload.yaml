@@ -43,6 +43,17 @@ spec:
           - name: type
       container:
         image: denniswitt/devops-tools:1.1.6 # renovate
+        securityContext:
+          capabilities:
+            drop:
+              - all
+          runAsGroup: 1000
+          runAsUser: 1000
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          seccompProfile:
+            type: RuntimeDefault
         command:
           - sh
           - -c
