@@ -45,10 +45,10 @@ spec:
             memory: 512Mi
         ingress:
           enabled: true
-          className: nginx
+          className: traefik
           annotations:
             cert-manager.io/cluster-issuer: saltysausage-com-letsencrypt
-            nginx.ingress.kubernetes.io/proxy-body-size: 64m
+            traefik.ingress.kubernetes.io/router.middlewares: "traefik-redirect-to-https@kubernetescrd"
           hosts:
             - host: vtt.saltysausage.com
               paths:

@@ -20,7 +20,6 @@ spec:
                         - matchPattern: "*"
         - toEndpoints:
               - matchLabels:
-                    app.kubernetes.io/name: ingress-nginx
-                    app.kubernetes.io/instance: ingress-nginx
-                    app.kubernetes.io/component: controller
-                    io.kubernetes.pod.namespace: ingress-nginx
+                    app.kubernetes.io/instance: traefik-traefik
+                    app.kubernetes.io/name: traefik
+                    io.kubernetes.pod.namespace: traefik

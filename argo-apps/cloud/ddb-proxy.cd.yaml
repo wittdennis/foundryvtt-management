@@ -33,9 +33,10 @@ spec:
             memory: 128Mi
         ingress:
           enabled: true
-          className: nginx
+          className: traefik
           annotations:
             cert-manager.io/cluster-issuer: letsencrypt
+            traefik.ingress.kubernetes.io/router.middlewares: "traefik-redirect-to-https@kubernetescrd"
           hosts:
             - host: ddb-proxy.derwitt.dev
               paths:
