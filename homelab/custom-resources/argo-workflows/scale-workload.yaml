@@ -34,7 +34,7 @@
 #           - name: name
 #           - name: type
 #       container:
-#         image: denniswitt/devops-tools:1.1.6 # renovate
+#         image: denniswitt/devops-tools:1.1.7 # renovate
 #         command:
 #           - sh
 #           - -c
