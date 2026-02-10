@@ -7,7 +7,7 @@ This file simply leverages [Renovate](https://docs.renovatebot.com/) in order to
 D&D 5e: 5.2.5 # renovate: datasource=github-releases depName=foundryvtt/dnd5e extractVersion=^release-(?<version>.*)$ versioning=semver
 Spire: 1.14.1 # renovate: datasource=gitlab-tags depName=olivier-grech/spire versioning=semver
 Daggerheart: 1.7.0 # renovate: datasource=github-tags depName=Foundryborne/daggerheart versioning=semver
-Shadowrun 5e: 0.32.3 # renovate: datasource=github-releases depName=SR5-FoundryVTT/SR5-FoundryVTT versioning=semver
+Shadowrun 5e: 0.32.4 # renovate: datasource=github-releases depName=SR5-FoundryVTT/SR5-FoundryVTT versioning=semver
 
 ## Modules
 
