@@ -2,18 +2,18 @@
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
-  name: allow-minio-traffic
+  name: allow-default-tenant-s3-traffic
 spec:
   endpointSelector:
     matchLabels:
-      network-policy/allow-minio-traffic: apply
+      network-policy/allow-default-tenant-s3-traffic: apply
   ingress:
     - fromEndpoints:
         - matchLabels:
-            v1.min.io/tenant: default
+            storage/tenant: default
             io.kubernetes.pod.namespace: storage
   egress:
     - toEndpoints:
         - matchLabels:
-            v1.min.io/tenant: default
+            storage/tenant: default
             io.kubernetes.pod.namespace: storage

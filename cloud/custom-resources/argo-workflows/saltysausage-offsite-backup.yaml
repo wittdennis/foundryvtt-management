@@ -13,7 +13,7 @@ spec:
   workflowSpec:
     podMetadata:
       labels:
-        network-policy/allow-minio-traffic: apply
+        network-policy/allow-default-tenant-s3-traffic: apply
         network-policy/allow-kube-apiserver-traffic: apply
         network-policy/allow-backup-egress: apply
     entrypoint: main
@@ -23,7 +23,7 @@ spec:
       serviceAccountName: foundry-workflows
       podMetadata:
         labels:
-          network-policy/allow-minio-traffic: apply
+          network-policy/allow-default-tenant-s3-traffic: apply
           network-policy/allow-kube-apiserver-traffic: apply
     securityContext:
       allowPrivilegeEscalation: false
