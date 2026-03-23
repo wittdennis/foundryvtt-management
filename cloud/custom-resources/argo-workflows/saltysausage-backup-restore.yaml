@@ -21,8 +21,6 @@ spec:
         network-policy/allow-default-tenant-s3-traffic: apply
         network-policy/allow-kube-apiserver-traffic: apply
   securityContext:
-    allowPrivilegeEscalation: false
-    readOnlyRootFilesystem: true
     runAsNonRoot: true
     seccompProfile:
       type: RuntimeDefault

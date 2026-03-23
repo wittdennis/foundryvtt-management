@@ -6,7 +6,6 @@ metadata:
   name: code-and-quest-backup-restore
 spec:
   entrypoint: main
-  serviceAccountName: foundry-workflows
   onExit: exit-handler
   podMetadata:
     labels:
@@ -21,8 +20,6 @@ spec:
         network-policy/allow-default-tenant-s3-traffic: apply
         network-policy/allow-kube-apiserver-traffic: apply
   securityContext:
-    allowPrivilegeEscalation: false
-    readOnlyRootFilesystem: true
     runAsNonRoot: true
     seccompProfile:
       type: RuntimeDefault

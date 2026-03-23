@@ -6,13 +6,10 @@ metadata:
   name: foundry-backup-restore-template
 spec:
   entrypoint: main
-  serviceAccountName: foundry-workflows
   artifactGC:
     strategy: OnWorkflowDeletion
     serviceAccountName: foundry-workflows
   securityContext:
-    allowPrivilegeEscalation: false
-    readOnlyRootFilesystem: true
     runAsNonRoot: true
     seccompProfile:
       type: RuntimeDefault

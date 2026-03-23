@@ -10,8 +10,6 @@ spec:
     strategy: OnWorkflowDeletion
     serviceAccountName: foundry-workflows
   securityContext:
-    allowPrivilegeEscalation: false
-    readOnlyRootFilesystem: true
     runAsNonRoot: true
     seccompProfile:
       type: RuntimeDefault
