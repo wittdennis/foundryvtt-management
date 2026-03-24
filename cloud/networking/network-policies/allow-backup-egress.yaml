@@ -9,7 +9,7 @@ spec:
       network-policy/allow-backup-egress: apply
   egress:
     - toFQDNs:
-        - matchName: "backups92217735.blob.core.windows.net"
+        - matchName: "nbg1.your-objectstorage.com"
       toPorts:
         - ports:
             - port: "443"
