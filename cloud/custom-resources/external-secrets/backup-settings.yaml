@@ -20,14 +20,14 @@ spec:
   data:
     - remoteRef:
         conversionStrategy: Default
-        key: /backups/azure-blob-settings
-        property: azure-account-key
-      secretKey: azure-account-key
+        key: /backups/hetzner-backup-bucket-credentials
+        property: access-key
+      secretKey: access-key
     - remoteRef:
         conversionStrategy: Default
-        key: /backups/azure-blob-settings
-        property: azure-account-name
-      secretKey: azure-account-name
+        key: /backups/hetzner-backup-bucket-credentials
+        property: secret-key
+      secretKey: secret-key
     - remoteRef:
         conversionStrategy: Default
         key: /backups/restic-settings

@@ -115,25 +115,25 @@ spec:
           - |
             restic init --no-cache || true
             restic backup --no-cache --host {{inputs.parameters.restic-hostname}} /tmp/foundry-data.tar.xz
-            restic forget --no-cache --host {{inputs.parameters.restic-hostname}} --keep-last 90 --prune
+            restic forget --no-cache --host {{inputs.parameters.restic-hostname}} --keep-last 30 --prune
         env:
-          - name: AZURE_ACCOUNT_NAME
+          - name: AWS_ACCESS_KEY_ID
             valueFrom:
               secretKeyRef:
                 name: backup-settings
-                key: azure-account-name
-          - name: AZURE_ACCOUNT_KEY
+                key: access-key
+          - name: AWS_SECRET_ACCESS_KEY
             valueFrom:
               secretKeyRef:
                 name: backup-settings
-                key: azure-account-key
+                key: secret-key
+          - name: RESTIC_REPOSITORY
+            value: s3:https://nbg1.your-objectstorage.com/pseud0random-backups/foundry
           - name: RESTIC_PASSWORD
             valueFrom:
               secretKeyRef:
                 name: backup-settings
                 key: restic-password
-          - name: RESTIC_REPOSITORY
-            value: azure:foundry:/
         volumeMounts:
           - mountPath: /tmp
             name: tmp
