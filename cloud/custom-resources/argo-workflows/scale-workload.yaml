@@ -40,7 +40,7 @@ spec:
           - name: name
           - name: type
       container:
-        image: denniswitt/devops-tools:1.2.8 # renovate
+        image: denniswitt/devops-tools:1.2.9 # renovate
         securityContext:
           capabilities:
             drop:
