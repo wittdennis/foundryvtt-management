@@ -15,7 +15,7 @@ spec:
     namespace: foundry
   source:
     repoURL: https://charts.derwitt.dev
-    targetRevision: 14.3.1
+    targetRevision: 15.0.0
     chart: foundryvtt
     helm:
       releaseName: shadowsea
