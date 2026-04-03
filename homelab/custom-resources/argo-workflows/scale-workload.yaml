@@ -34,7 +34,7 @@
 #           - name: name
 #           - name: type
 #       container:
-#         image: ghcr.io/wittdennis/devops-tools:1.2.12 # renovate
+#         image: ghcr.io/wittdennis/devops-tools:1.2.13 # renovate
 #         command:
 #           - sh
 #           - -c
