@@ -168,7 +168,7 @@
 #           - name: backup-archive
 #             path: /tmp/foundry-data.tar.xz
 #       container:
-#         image: ghcr.io/wittdennis/tar:1.0.26 # renovate
+#         image: ghcr.io/wittdennis/tar:1.0.27 # renovate
 #         workingDir: /tmp
 #         command:
 #           - sh
