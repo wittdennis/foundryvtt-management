@@ -15,7 +15,7 @@ spec:
     namespace: foundry
   source:
     repoURL: https://charts.derwitt.dev
-    targetRevision: 14.3.1
+    targetRevision: 15.0.4
     chart: foundryvtt
     helm:
       releaseName: code-and-quest
@@ -24,10 +24,17 @@ spec:
         config:
           enableTelemetry: true
           defaultWorld: danddhard
-        existingSecret:
-          name: code-and-quest-foundryvtt
-          containsLicenseKey: true
-          containsAwsConfig: true
+          disableBackups: true
+          licenseKeySecret:
+            name: code-and-quest-foundryvtt
+            key: foundry-license-key
+          foundryAuthSecret:
+            name: code-and-quest-foundryvtt
+            usernameKey: foundry-username
+            passwordKey: foundry-password
+          adminKeySecret:
+            name: code-and-quest-foundryvtt
+            key: admin-key
         storage:
           className: longhorn
           size: 5Gi
