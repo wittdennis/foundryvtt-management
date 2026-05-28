@@ -1,0 +1,16 @@
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-mrprimate-artifacts-egress
+spec:
+  endpointSelector:
+    matchLabels:
+      network-policy/allow-mrprimate-artifacts-egress: apply
+  egress:
+    - toFQDNs:
+        - matchName: "artifacts.ddb.mrprimate.co.uk"
+      toPorts:
+        - ports:
+            - port: "443"
+              protocol: TCP
