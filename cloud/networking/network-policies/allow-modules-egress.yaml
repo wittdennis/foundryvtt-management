@@ -2,14 +2,15 @@
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
-  name: allow-mrprimate-artifacts-egress
+  name: allow-modules-egress
 spec:
   endpointSelector:
     matchLabels:
-      network-policy/allow-mrprimate-artifacts-egress: apply
+      network-policy/allow-modules-egress: apply
   egress:
     - toFQDNs:
         - matchName: "artifacts.ddb.mrprimate.co.uk"
+        - matchName: "d3erver.codabool.workers.dev"
       toPorts:
         - ports:
             - port: "443"
