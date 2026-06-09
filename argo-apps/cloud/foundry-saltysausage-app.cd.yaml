@@ -24,10 +24,17 @@ spec:
         config:
           enableTelemetry: true
           defaultWorld: tomb-of-annhiliation
-        existingSecret:
-          name: saltysausage-foundryvtt
-          containsLicenseKey: true
-          containsAwsConfig: true
+          disableBackups: true
+          licenseKeySecret:
+            name: saltysausage-foundryvtt
+            key: foundry-license-key
+          foundryAuthSecret:
+            name: saltysausage-foundryvtt
+            usernameKey: foundry-username
+            passwordKey: foundry-password
+          adminKeySecret:
+            name: saltysausage-foundryvtt
+            key: admin-key
         storage:
           className: longhorn
           size: 5Gi

@@ -24,10 +24,17 @@ spec:
         config:
           enableTelemetry: true
           defaultWorld: running-hot
-        existingSecret:
-          name: shadowsea-foundryvtt
-          containsLicenseKey: true
-          containsAwsConfig: false
+          disableBackups: true
+          licenseKeySecret:
+            name: shadowsea-foundryvtt
+            key: foundry-license-key
+          foundryAuthSecret:
+            name: shadowsea-foundryvtt
+            usernameKey: foundry-username
+            passwordKey: foundry-password
+          adminKeySecret:
+            name: shadowsea-foundryvtt
+            key: admin-key
         storage:
           className: hcloud-volumes
           size: 10Gi
