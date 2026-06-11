@@ -183,7 +183,7 @@ spec:
         - name: tmp
           emptyDir: {}
       container:
-        image: ghcr.io/wittdennis/tar:1.0.30 # renovate
+        image: ghcr.io/wittdennis/tar:1.0.31 # renovate
         workingDir: /tmp
         command:
           - sh
