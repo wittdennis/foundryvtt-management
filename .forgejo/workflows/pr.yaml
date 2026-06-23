@@ -1,0 +1,32 @@
+---
+name: lint
+
+permissions: {}
+
+on:
+  pull_request:
+    branches:
+      - main
+      - release/**
+
+jobs:
+  lint:
+    runs-on: debian-12
+    permissions:
+      contents: read
+    steps:
+      - uses: https://git.derwitt.site/actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+
+      - name: setup uv
+        uses: https://git.derwitt.site/actions/setup-uv@fac544c07dec837d0ccb6301d7b5580bf5edae39 # v8.2.0
+
+      - name: install yamllint
+        run: |
+          uv tool install yamllint@${YAMLLINT_VERSION}
+          uv tool list
+        env:
+          YAMLLINT_VERSION: 1.38.0 # datasource=pypi depName=yamllint packageName=yamllint versioning=semver
+
+      - name: lint
+        run: |
+          yamllint -c .yamllint .
