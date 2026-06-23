@@ -20,7 +20,7 @@ spec:
         automated:
           prune: true
       source:
-        repoURL: https://github.com/wittdennis/foundryvtt-management
+        repoURL: https://git.derwitt.site/homelab/asgard
         targetRevision: HEAD
         path: "{{ nameNormalized }}"
         directory:
