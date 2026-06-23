@@ -36,12 +36,6 @@ spec:
             size: 5Gi
         podLabels:
           network-policy/allow-world-http-ingress: apply
-        resources:
-          requests:
-            cpu: 100m
-            memory: 256Mi
-          limits:
-            memory: 512Mi
         ingress:
           enabled: true
           className: traefik
