@@ -1,0 +1,59 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cloud-file-explorer-vtt-code-and-quest
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: foundry
+  syncPolicy:
+    automated:
+      prune: true
+  destination:
+    name: cloud
+    namespace: foundry
+  source:
+    repoURL: https://charts.derwitt.dev
+    targetRevision: 1.0.1
+    chart: filebrowser
+    helm:
+      releaseName: file-explorer-vtt-code-and-quest
+      values: |
+
+        affinity:
+          podAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              - labelSelector:
+                  matchLabels:
+                    foundry-instance: code-and-quest
+                topologyKey: kubernetes.io/hostname
+        persistence:
+          data:
+            existingVolumeClaim: data-code-and-quest-foundryvtt-0
+          config:
+            className: longhorn
+            size: 5Gi
+        podLabels:
+          network-policy/allow-world-http-ingress: apply
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          limits:
+            memory: 512Mi
+        ingress:
+          enabled: true
+          className: traefik
+          annotations:
+            cert-manager.io/cluster-issuer: code-and-quest-de-letsencrypt
+            traefik.ingress.kubernetes.io/router.middlewares: "traefik-redirect-to-https@kubernetescrd"
+          hosts:
+            - host: explorer.vtt.code-and-quest.de
+              paths:
+                - path: /
+                  pathType: ImplementationSpecific
+          tls:
+            - hosts:
+                - explorer.vtt.code-and-quest.de
+              secretName: explorer-foundry-code-and-quest-ingress-tls

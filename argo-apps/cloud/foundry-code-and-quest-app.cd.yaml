@@ -45,6 +45,7 @@ spec:
           network-policy/allow-gitlab-egress: apply
           network-policy/allow-aws-egress: apply
           network-policy/allow-modules-egress: apply
+          foundry-instance: code-and-quest
         resources:
           requests:
             cpu: 40m
