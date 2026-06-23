@@ -1,0 +1,52 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cloud-file-explorer-shadowsea
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: foundry
+  syncPolicy:
+    automated:
+      prune: true
+  destination:
+    name: cloud
+    namespace: foundry
+  source:
+    repoURL: https://charts.derwitt.dev
+    targetRevision: 1.0.1
+    chart: filebrowser
+    helm:
+      releaseName: file-explorer-shadowsea
+      values: |
+
+        persistence:
+          data:
+            existingVolumeClaim: data-shadowsea-foundryvtt-0
+          config:
+            className: longhorn
+            size: 5Gi
+        podLabels:
+          network-policy/allow-world-http-ingress: apply
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          limits:
+            memory: 512Mi
+        ingress:
+          enabled: true
+          className: traefik
+          annotations:
+            cert-manager.io/cluster-issuer: shadowsea-xyz-letsencrypt
+            traefik.ingress.kubernetes.io/router.middlewares: "traefik-redirect-to-https@kubernetescrd"
+          hosts:
+            - host: explorer.vtt.shadowsea.xyz
+              paths:
+                - path: /
+                  pathType: ImplementationSpecific
+          tls:
+            - hosts:
+                - explorer.vtt.shadowsea.xyz
+              secretName: explorer-foundry-shadowsea-ingress-tls
