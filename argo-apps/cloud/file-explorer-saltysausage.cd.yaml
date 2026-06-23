@@ -2,7 +2,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: cloud-file-explorer-vtt-shadowsea
+  name: cloud-file-explorer-vtt-saltysausage
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
@@ -18,7 +18,7 @@ spec:
     targetRevision: 1.0.1
     chart: filebrowser
     helm:
-      releaseName: file-explorer-vtt-shadowsea
+      releaseName: file-explorer-vtt-saltysausage
       values: |
 
         affinity:
@@ -26,11 +26,11 @@ spec:
             requiredDuringSchedulingIgnoredDuringExecution:
               - labelSelector:
                   matchLabels:
-                    foundry-instance: shadowsea
+                    foundry-instance: saltysausage
                 topologyKey: kubernetes.io/hostname
         persistence:
           data:
-            existingVolumeClaim: data-shadowsea-foundryvtt-0
+            existingVolumeClaim: data-saltysausage-foundryvtt-0
           config:
             className: longhorn
             size: 5Gi
@@ -46,14 +46,14 @@ spec:
           enabled: true
           className: traefik
           annotations:
-            cert-manager.io/cluster-issuer: shadowsea-xyz-letsencrypt
+            cert-manager.io/cluster-issuer: saltysausage-com-letsencrypt
             traefik.ingress.kubernetes.io/router.middlewares: "traefik-redirect-to-https@kubernetescrd"
           hosts:
-            - host: explorer.vtt.shadowsea.xyz
+            - host: explorer.vtt.saltysausage.com
               paths:
                 - path: /
                   pathType: ImplementationSpecific
           tls:
             - hosts:
-                - explorer.vtt.shadowsea.xyz
-              secretName: explorer-foundry-shadowsea-ingress-tls
+                - explorer.vtt.saltysausage.com
+              secretName: explorer-foundry-saltysausage-ingress-tls
