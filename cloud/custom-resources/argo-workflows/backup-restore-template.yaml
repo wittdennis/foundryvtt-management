@@ -81,8 +81,8 @@ spec:
           - |
             set -eu
 
-            restic init || true
-            restic snapshots
+            restic init --no-cache || true
+            restic snapshots --no-cache
         volumeMounts:
           - name: tmp
             mountPath: /tmp
