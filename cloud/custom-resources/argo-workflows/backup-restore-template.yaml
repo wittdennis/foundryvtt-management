@@ -149,8 +149,8 @@ spec:
             set -eu
 
             echo "Getting snapshot form restic repository"
-            restic init || true
-            restic restore {{inputs.parameters.snapshotId}} --target / --path /tmp/foundry-data.tar.xz
+            restic init --no-cache || true
+            restic restore --no-cache {{inputs.parameters.snapshotId}} --target / --path /tmp/foundry-data.tar.xz
         volumeMounts:
           - name: tmp
             mountPath: /tmp
