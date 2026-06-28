@@ -16,6 +16,7 @@ spec:
   arguments:
     parameters:
       - name: instance
+      - name: fb-instance
       - name: restic-hostname
       - name: pvc-name
   templates:
@@ -23,10 +24,11 @@ spec:
       inputs:
         parameters:
           - name: instance
+          - name: fb-instance
           - name: restic-hostname
           - name: pvc-name
       steps:
-        - - name: scale-down
+        - - name: scale-down-foundry
             arguments:
               parameters:
                 - name: name
@@ -35,6 +37,18 @@ spec:
                   value: "0"
                 - name: type
                   value: statefulset
+            templateRef:
+              template: scale-workload
+              name: scale-workload
+          - name: scale-down-file-browser
+            arguments:
+              parameters:
+                - name: name
+                  value: "{{inputs.parameters.fb-instance}}"
+                - name: replicaCount
+                  value: "0"
+                - name: type
+                  value: deployment
             templateRef:
               template: scale-workload
               name: scale-workload

@@ -41,6 +41,8 @@ spec:
                 parameters:
                   - name: instance
                     value: saltysausage-foundryvtt
+                  - name: fb-instance
+                    value: file-explorer-vtt-saltysausage-filebrowser
                   - name: restic-hostname
                     value: saltysausage-foundryvtt
                   - name: pvc-name
@@ -48,7 +50,7 @@ spec:
 
       - name: exit-handler
         steps:
-          - - name: scale-up
+          - - name: scale-up-foundry
               arguments:
                 parameters:
                   - name: name
@@ -57,6 +59,18 @@ spec:
                     value: "1"
                   - name: type
                     value: statefulset
+              templateRef:
+                template: scale-workload
+                name: scale-workload
+          - - name: scale-up-file-browser
+              arguments:
+                parameters:
+                  - name: name
+                    value: file-explorer-vtt-saltysausage-filebrowser
+                  - name: replicaCount
+                    value: "1"
+                  - name: type
+                    value: deployment
               templateRef:
                 template: scale-workload
                 name: scale-workload

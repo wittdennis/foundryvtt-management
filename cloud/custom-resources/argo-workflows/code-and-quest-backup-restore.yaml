@@ -32,6 +32,8 @@ spec:
               parameters:
                 - name: instance
                   value: code-and-quest-foundryvtt
+                - name: fb-instance
+                  value: file-explorer-vtt-code-and-quest-filebrowser
                 - name: pvc-name
                   value: data-code-and-quest-foundryvtt-0
             templateRef:
@@ -41,7 +43,7 @@ spec:
     - name: exit-handler
       dag:
         tasks:
-          - name: scale-up
+          - name: scale-up-foundry
             arguments:
               parameters:
                 - name: name
@@ -50,6 +52,18 @@ spec:
                   value: "1"
                 - name: type
                   value: statefulset
+            templateRef:
+              template: scale-workload
+              name: scale-workload
+          - name: scale-up-file-browser
+            arguments:
+              parameters:
+                - name: name
+                  value: file-explorer-vtt-code-and-quest-filebrowser
+                - name: replicaCount
+                  value: "1"
+                - name: type
+                  value: deployment
             templateRef:
               template: scale-workload
               name: scale-workload
