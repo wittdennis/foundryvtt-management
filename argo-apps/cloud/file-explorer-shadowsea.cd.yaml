@@ -15,7 +15,7 @@ spec:
     namespace: foundry
   source:
     repoURL: https://charts.derwitt.dev
-    targetRevision: 1.0.2
+    targetRevision: 1.0.3
     chart: filebrowser
     helm:
       releaseName: file-explorer-vtt-shadowsea
