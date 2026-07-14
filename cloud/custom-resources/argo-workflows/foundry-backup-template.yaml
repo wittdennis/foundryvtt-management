@@ -86,7 +86,7 @@ spec:
             s3:
               key: "{{workflow.name}}/foundry-data.tar.xz"
       container:
-        image: ghcr.io/wittdennis/tar:1.0.31 # renovate
+        image: ghcr.io/wittdennis/tar:1.0.32 # renovate
         workingDir: /tmp
         command:
           - sh
