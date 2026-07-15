@@ -29,5 +29,5 @@ Global Progress Clocks: 1.3.2 # renovate: datasource=github-releases depName=Car
 Clockworks: 1.5.1 # renovate: datasource=github-tags depName=BluSunrize/fvtt-clockworks versioning=semver
 Lock View: v2.1.0 # renovate: datasource=github-releases depName=MaterialFoundry/LockView versioning=semver
 Phils Day & Night Cycle: v4.9.4 # renovate: datasource=github-tags depName=PhilsModules/phils-day-night-cycle versioning=semver
-RSReforged: 4.11.5 # renovate: datasource=github-tags depName=arrowedisgaming/RSReforged extractVersion=^release-(?<version>.*)$ versioning=semver
+RSReforged: 4.12.0 # renovate: datasource=github-tags depName=arrowedisgaming/RSReforged extractVersion=^release-(?<version>.*)$ versioning=semver
 PDFPager: 14.2.0 # renovate: datasource=github-tags depName=farling42/fvtt-pdf-pager versioning=semver
