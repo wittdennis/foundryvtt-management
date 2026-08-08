@@ -10,7 +10,7 @@ Shadowrun 5e: 0.36.3 # renovate: datasource=github-releases depName=SR5-FoundryV
 
 ## Modules
 
-DDB-Importer: 7.3.16 # renovate: datasource=github-tags depName=MrPrimate/ddb-importer versioning=semver
+DDB-Importer: 7.4.1 # renovate: datasource=github-tags depName=MrPrimate/ddb-importer versioning=semver
 Dice So Nice!: 6.2.9 # renovate: datasource=gitlab-tags depName=riccisi/foundryvtt-dice-so-nice versioning=semver
 Dice Tray: 4.0.5 # renovate: datasource=github-releases depName=mclemente/fvtt-dice-tray versioning=semver
 Polyglot: 2.9.2 # renovate: datasource=github-releases depName=mclemente/fvtt-module-polyglot
