@@ -15,7 +15,7 @@ spec:
     namespace: foundry
   source:
     repoURL: https://charts.derwitt.dev
-    targetRevision: 15.2.2
+    targetRevision: 15.2.3
     chart: foundryvtt
     helm:
       releaseName: code-and-quest
