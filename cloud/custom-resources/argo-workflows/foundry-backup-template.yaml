@@ -6,9 +6,6 @@ metadata:
   name: foundry-backup-template
 spec:
   entrypoint: main
-  artifactGC:
-    strategy: OnWorkflowDeletion
-    serviceAccountName: foundry-workflows
   securityContext:
     runAsNonRoot: true
     seccompProfile:
@@ -52,26 +49,20 @@ spec:
             templateRef:
               template: scale-workload
               name: scale-workload
-        - - name: create-backup
-            arguments:
-              parameters:
-                - name: pvc-name
-                  value: "{{inputs.parameters.pvc-name}}"
-            template: archive-data
-        - - name: upload-backup
-            template: upload-backup
+        - - name: backup
+            template: backup
             arguments:
               parameters:
                 - name: restic-hostname
                   value: "{{inputs.parameters.restic-hostname}}"
-              artifacts:
-                - name: backup-archive
-                  from: "{{steps.create-backup.outputs.artifacts.backup-archive}}"
+                - name: pvc-name
+                  value: "{{inputs.parameters.pvc-name}}"
 
-    - name: archive-data
+    - name: backup
       serviceAccountName: foundry-workflows
       inputs:
         parameters:
+          - name: restic-hostname
           - name: pvc-name
       volumes:
         - name: tmp
@@ -79,57 +70,24 @@ spec:
         - name: foundry-data
           persistentVolumeClaim:
             claimName: "{{inputs.parameters.pvc-name}}"
-      outputs:
-        artifacts:
-          - name: backup-archive
-            path: /tmp/foundry-data.tar.xz
-            s3:
-              key: "{{workflow.name}}/foundry-data.tar.xz"
-      container:
-        image: ghcr.io/wittdennis/tar:1.0.34 # renovate
-        workingDir: /tmp
-        command:
-          - sh
-          - -c
-        args:
-          - |
-            set -eux
-
-            tar cfJv foundry-data.tar.xz /foundry-data/Data
-            du -sch foundry-data.tar.xz
-        volumeMounts:
-          - mountPath: /tmp
-            name: tmp
-          - mountPath: /foundry-data
-            name: foundry-data
-        securityContext:
-          runAsUser: 1000
-          runAsGroup: 1000
-          allowPrivilegeEscalation: false
-          readOnlyRootFilesystem: true
-          runAsNonRoot: true
-          seccompProfile:
-            type: RuntimeDefault
-
-    - name: upload-backup
-      serviceAccountName: foundry-workflows
-      volumes:
-        - name: tmp
-          emptyDir: {}
-      inputs:
-        parameters:
-          - name: restic-hostname
-        artifacts:
-          - name: backup-archive
-            path: /tmp/foundry-data.tar.xz
+            readOnly: true
       container:
         image: restic/restic:0.19.1 # renovate
         command: [sh, -c]
         args:
           - |
+            set -eu
+
             restic init --no-cache || true
-            restic backup --no-cache --host {{inputs.parameters.restic-hostname}} /tmp/foundry-data.tar.xz
-            restic forget --no-cache --host {{inputs.parameters.restic-hostname}} --keep-last 30 --prune
+            restic backup --no-cache --host {{inputs.parameters.restic-hostname}} /foundry-data/Data
+
+            # forget runs daily and is cheap; prune repacks and re-reads pack metadata
+            # from S3 (no local cache), so it is confined to Sundays
+            PRUNE=""
+            if [ "$(date +%u)" = "7" ]; then
+              PRUNE="--prune"
+            fi
+            restic forget --no-cache --host {{inputs.parameters.restic-hostname}} --keep-last 30 $PRUNE
         env:
           - name: AWS_ACCESS_KEY_ID
             valueFrom:
@@ -151,6 +109,9 @@ spec:
         volumeMounts:
           - mountPath: /tmp
             name: tmp
+          - mountPath: /foundry-data
+            name: foundry-data
+            readOnly: true
         securityContext:
           runAsUser: 1000
           runAsGroup: 1000

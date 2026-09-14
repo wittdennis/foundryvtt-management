@@ -13,13 +13,6 @@ spec:
       network-policy/allow-workflows-s3-egress: apply
       network-policy/allow-kube-apiserver-traffic: apply
       network-policy/allow-backup-egress: apply
-  artifactGC:
-    strategy: OnWorkflowDeletion
-    serviceAccountName: foundry-workflows
-    podMetadata:
-      labels:
-        network-policy/allow-workflows-s3-egress: apply
-        network-policy/allow-kube-apiserver-traffic: apply
   securityContext:
     runAsNonRoot: true
     seccompProfile:

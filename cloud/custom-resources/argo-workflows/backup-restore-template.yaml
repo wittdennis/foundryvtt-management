@@ -6,9 +6,6 @@ metadata:
   name: foundry-backup-restore-template
 spec:
   entrypoint: main
-  artifactGC:
-    strategy: OnWorkflowDeletion
-    serviceAccountName: foundry-workflows
   securityContext:
     runAsNonRoot: true
     seccompProfile:
@@ -30,12 +27,6 @@ spec:
             template: list-snapshots
         - - name: choose-snapshot
             template: choose-snapshot
-        - - name: download-snapshot
-            template: download-snapshot
-            arguments:
-              parameters:
-                - name: snapshotId
-                  value: "{{steps.choose-snapshot.outputs.parameters.snapshotId}}"
         - - name: scale-down-foundry
             arguments:
               parameters:
@@ -64,11 +55,10 @@ spec:
             template: restore-data
             arguments:
               parameters:
+                - name: snapshotId
+                  value: "{{steps.choose-snapshot.outputs.parameters.snapshotId}}"
                 - name: pvc-name
                   value: "{{inputs.parameters.pvc-name}}"
-              artifacts:
-                - name: backup-archive
-                  from: "{{steps.download-snapshot.outputs.artifacts.backup-archive}}"
 
     - name: list-snapshots
       volumes:
@@ -128,19 +118,18 @@ spec:
             valueFrom:
               supplied: {}
 
-    - name: download-snapshot
+    - name: restore-data
+      serviceAccountName: foundry-workflows
       inputs:
         parameters:
           - name: snapshotId
+          - name: pvc-name
       volumes:
+        - name: foundry-data
+          persistentVolumeClaim:
+            claimName: "{{inputs.parameters.pvc-name}}"
         - name: tmp
           emptyDir: {}
-      outputs:
-        artifacts:
-          - name: backup-archive
-            path: /tmp/foundry-data.tar.xz
-            s3:
-              key: "{{workflow.name}}/foundry-data.tar.xz"
       container:
         image: restic/restic:0.19.1 # renovate
         command: [sh, -c]
@@ -148,12 +137,12 @@ spec:
           - |
             set -eu
 
-            echo "Getting snapshot form restic repository"
-            restic init --no-cache || true
-            restic restore --no-cache {{inputs.parameters.snapshotId}} --target / --path /tmp/foundry-data.tar.xz
+            restic restore --no-cache {{inputs.parameters.snapshotId}} --target /
         volumeMounts:
-          - name: tmp
-            mountPath: /tmp
+          - mountPath: /tmp
+            name: tmp
+          - mountPath: /foundry-data
+            name: foundry-data
         env:
           - name: AWS_ACCESS_KEY_ID
             valueFrom:
@@ -172,46 +161,6 @@ spec:
               secretKeyRef:
                 name: backup-settings
                 key: restic-password
-        securityContext:
-          runAsUser: 100
-          runAsGroup: 1000
-          allowPrivilegeEscalation: false
-          readOnlyRootFilesystem: true
-          runAsNonRoot: true
-          capabilities:
-            drop:
-              - ALL
-
-    - name: restore-data
-      serviceAccountName: foundry-workflows
-      inputs:
-        parameters:
-          - name: pvc-name
-        artifacts:
-          - name: backup-archive
-            path: /tmp/foundry-data.tar.xz
-      volumes:
-        - name: foundry-data
-          persistentVolumeClaim:
-            claimName: "{{inputs.parameters.pvc-name}}"
-        - name: tmp
-          emptyDir: {}
-      container:
-        image: ghcr.io/wittdennis/tar:1.0.34 # renovate
-        workingDir: /tmp
-        command:
-          - sh
-          - -c
-        args:
-          - |
-            set -eux
-
-            tar -C /foundry-data -Jxvf foundry-data.tar.xz --overwrite --strip-components=1
-        volumeMounts:
-          - mountPath: /tmp
-            name: tmp
-          - mountPath: /foundry-data
-            name: foundry-data
         securityContext:
           runAsUser: 0
           runAsGroup: 0
