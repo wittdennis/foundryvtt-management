@@ -14,8 +14,6 @@ spec:
     metadata:
       name: "{{ nameNormalized }}-foundry-bootstrapper"
       namespace: foundry
-      annotations:
-        argocd.argoproj.io/client-side-apply-migration-manager: argocd-controller
     spec:
       project: foundry
       syncPolicy:
