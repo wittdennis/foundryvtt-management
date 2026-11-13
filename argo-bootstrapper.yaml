@@ -14,11 +14,15 @@ spec:
     metadata:
       name: "{{ nameNormalized }}-foundry-argo-apps-bootstrapper"
       namespace: foundry
+      annotations:
+        argocd.argoproj.io/client-side-apply-migration-manager: argocd-controller
     spec:
       project: foundry
       syncPolicy:
         automated:
           prune: true
+        syncOptions:
+          - ServerSideApply=true
       source:
         repoURL: https://git.derwitt.site/homelab/asgard
         targetRevision: HEAD
